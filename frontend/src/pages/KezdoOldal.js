@@ -1,6 +1,8 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+ 
+
 const KezdoOldal = () => {
   return (
     <div>
@@ -23,6 +25,7 @@ const KezdoOldal = () => {
             <button className="btn btn-primary btn-lg">Diákok kezelése</button>
             <button className="btn btn-secondary btn-lg">Belépések megtekintése</button>
             <button className="btn btn-outline-dark btn-lg">Profilom</button>
+            
           </div>
         </div>
       </div>
