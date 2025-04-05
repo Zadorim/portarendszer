@@ -8,3 +8,16 @@ appsettings.*.json
 node_modules/
 dist/
 .env
+# ASP.NET build fájlok
+*.dll
+*.exe
+*.pdb
+*.cache
+*.json
+*.csproj.user
+bin/
+obj/
+
+# frontend build output (ha buildelsz majd)
+build/
+
