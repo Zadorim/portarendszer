@@ -14,14 +14,8 @@ function Login() {
         felhasznalonev: username,
         jelszo: password,
       });
-
-      // ✅ Token mentése localStorage-be
-      localStorage.setItem('token', res.data.token);
-
       alert('Sikeres bejelentkezés!');
-      
-      // ✅ Átirányítás a kezdőoldalra
-      navigate('/');
+      navigate('/kezdooldal'); // átirányítás
     } catch (err) {
       alert('Hiba: ' + (err.response?.data || err.message));
     }
@@ -59,4 +53,5 @@ function Login() {
 }
 
 export default Login;
+
 
