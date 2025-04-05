@@ -14,9 +14,9 @@ const AdminNavbar = () => {
         <div className="collapse navbar-collapse" id="adminNavbar">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/admin/diakok">
-                <i className="bi bi-people-fill me-1"></i> Diákok
-              </Link>
+            <Link className="nav-link" to="/admin/tanulok">
+              <i className="bi bi-people-fill me-1"></i> Tanulók
+            </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/admin/jelenlet">
