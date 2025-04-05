@@ -6,6 +6,9 @@ import Register from './pages/Register';
 import AdminOldal from './pages/AdminOldal';
 import TanulokOldal from './pages/TanulokOldal';
 import PortasOldal from './pages/PortasOldal';
+import BelepesekOldal from './pages/BelepesekOldal';
+import ProfilOldal from './pages/ProfilOldal';
+
 
 function App() {
   return (
