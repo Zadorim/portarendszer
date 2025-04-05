@@ -18,7 +18,7 @@ const KezdoOldal = () => {
         <div className="text-center">
           <h1 className="mb-4">Üdvözlünk a PortaRendszerben!</h1>
           <p className="lead">
-            Ez a rendszer lehetővé teszi a diákok, tanárok és portások számára a beléptetést és nyilvántartást.
+            Ez a rendszer lehetővé teszi a szülők, tanárok és portások számára a beléptetést és nyilvántartást.
           </p>
 
           <div className="d-grid gap-2 col-6 mx-auto mt-4">
