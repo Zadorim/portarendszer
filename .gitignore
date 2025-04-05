@@ -1,0 +1,10 @@
+.vs/
+appsettings.json
+appsettings.*.json
+/obj
+/bin
+/Debug
+*.log
+node_modules/
+dist/
+.env
