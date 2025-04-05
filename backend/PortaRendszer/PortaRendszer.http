@@ -1,0 +1,6 @@
+@PortaRendszer_HostAddress = http://localhost:5072
+
+GET {{PortaRendszer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
