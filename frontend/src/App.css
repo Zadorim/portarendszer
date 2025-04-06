@@ -1,0 +1,16 @@
+/* Szövegárnyék, hogy jobban olvasható legyen világos háttéren */
+.text-shadow {
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Responsív betűméretek kisebb kijelzőn */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.8rem;
+    }
+  
+    .fs-5 {
+      font-size: 1rem;
+    }
+  }
+  
