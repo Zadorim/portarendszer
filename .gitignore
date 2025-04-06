@@ -1,23 +1,29 @@
+# Visual Studio és IDE fájlok
 .vs/
+*.csproj.user
+
+# ASP.NET beállítások
 appsettings.json
 appsettings.*.json
-/obj
-/bin
-/Debug
-*.log
-node_modules/
-dist/
-.env
-# ASP.NET build fájlok
+
+# Build outputok (backend)
+bin/
+obj/
 *.dll
 *.exe
 *.pdb
 *.cache
-*.json
-*.csproj.user
-bin/
-obj/
+*.suo
+*.user
+*.sln.docstates
 
-# frontend build output (ha buildelsz majd)
+# Log fájlok
+*.log
+
+# Frontend (Node.js / React)
+node_modules/
+dist/
 build/
+.env
+
 
