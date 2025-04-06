@@ -1,21 +1,21 @@
 /* index.css – globális stílusok, navbar miatt is hasznos */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-  }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  h1, h2 {
-    font-weight: 600;
-    text-align: center;
-  }
-  
-  .container {
-    padding-top: 100px; /* a fix navbar miatt legyen hely */
-  }
-  
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1, h2 {
+  font-weight: 600;
+  text-align: center;
+}
+
+.container {
+  padding-top: 100px; /* a fix navbar miatt legyen hely */
+}
