@@ -6,6 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
+
 import KezdoOldal from './pages/KezdoOldal';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -14,6 +15,7 @@ import TanulokOldal from './pages/TanulokOldal';
 import PortasOldal from './pages/PortasOldal';
 import BelepesekOldal from './pages/BelepesekOldal';
 import ProfilOldal from './pages/ProfilOldal';
+import OsztalyokOldal from './pages/OsztalyokOldal';
 import Footer from './components/Footer';
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
           <Route path="/admin/belepesek" element={<BelepesekOldal />} />
           <Route path="/admin/profil" element={<ProfilOldal />} />
           <Route path="/portas" element={<PortasOldal />} />
+          <Route path="/admin/osztalyok" element={<OsztalyokOldal />} />
         </Routes>
         <Footer />
       </div>
