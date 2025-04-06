@@ -5,6 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../App.css';
+import { Typewriter } from 'react-simple-typewriter';
+
+
 
 const KezdoOldal = () => {
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const KezdoOldal = () => {
   const [timeoutId, setTimeoutId] = useState(null);
 
   const handleMouseMove = () => {
-    setOpacity(0.4); // halványodik
+    setOpacity(0.8); // halványodik
     if (timeoutId) clearTimeout(timeoutId); // előzőt törli
     const id = setTimeout(() => setOpacity(1), 1500); // visszaerősödik
     setTimeoutId(id);
@@ -50,7 +53,15 @@ const KezdoOldal = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="display-6 text-shadow mb-4">
-            Üdvözlünk a Miskolci Szilágyi Dezső Általános Iskola portarendszerében!
+            <Typewriter
+              words={['Üdvözlünk a Miskolci Szilágyi Dezső Általános Iskola portarendszerében!']}
+              loop={1}
+              cursor
+              cursorStyle="|"
+              typeSpeed={50}
+              deleteSpeed={0}
+              delaySpeed={2000}
+            />
           </h1>
           <p className="fs-5">
             Ez egy egyedül álló hívó és jelzőrendszer, ami megkönnyíti az itt dolgozók, a tanulók és a szülők mindennapját.
