@@ -68,7 +68,19 @@ const KezdoOldal = () => {
             <br />
             Bátran kérj segítséget!
           </p>
-          <h4 className="mt-4 fw-bold">Legyen szép napod!<br />Üdvözöl a <span className="text-warning">SZIDIPORT</span>!</h4>
+          <h4 className="mt-4 fw-bold">
+            Legyen szép napod!
+            <br />
+            Üdvözöl a{" "}
+            <button
+              onClick={() => navigate("/portas")}
+              className="btn btn-warning btn-sm fw-bold"
+              style={{ border: 'none', background: 'transparent', color: '#ffc107', textDecoration: 'underline' }}
+            >
+              SZIDIPORT
+            </button>
+            !
+          </h4>
         </motion.div>
       </div>
     </div>

@@ -12,52 +12,88 @@ function PortasOldal() {
   }, []);
 
   const osztalyok = [...new Set(tanulok.map(t => t.osztaly))];
-
   const tanulokSzurt = osztalySzuro
     ? tanulok.filter(t => t.osztaly === osztalySzuro)
     : tanulok;
 
   const jelzesKuldese = (tanulo) => {
+    if (tanulo.csakJogosult) {
+      const elfogad = window.confirm(
+        `${tanulo.nev} csak jogosult személlyel távozhat. Ellenőrizted?`
+      );
+      if (!elfogad) return;
+    }
     console.log(`Jelzés: ${tanulo.nev} (${tanulo.osztaly}) tanulóért megérkeztek.`);
-    // Később WebSocket vagy POST API hívás
+    // Itt lehet majd WebSocket vagy API hívás
   };
 
   return (
     <div className="container mt-5">
-      <h2>Portás felület</h2>
+      <h2 className="text-center mb-4">Portás felület</h2>
 
-      <div className="mb-3">
-        <label className="form-label">Osztály szűrés:</label>
-        <select className="form-select w-25" value={osztalySzuro} onChange={(e) => setOsztalySzuro(e.target.value)}>
-          <option value="">Összes osztály</option>
+      {!osztalySzuro && (
+        <div className="row row-cols-2 row-cols-md-4 g-4 my-4">
           {osztalyok.map((o, i) => (
-            <option key={i} value={o}>{o}</option>
+            <div className="col" key={i}>
+              <div
+                className="card h-100 text-center bg-light border border-primary shadow"
+                style={{ cursor: 'pointer' }}
+                onClick={() => setOsztalySzuro(o)}
+              >
+                <div className="card-body">
+                  <h5 className="card-title">{o}</h5>
+                  <p className="card-text">Tanár: <strong>Ismeretlen</strong></p>
+                  <p className="card-text">Terem: <strong>---</strong></p>
+                </div>
+              </div>
+            </div>
           ))}
-        </select>
-      </div>
+        </div>
+      )}
 
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Név</th>
-            <th>Osztály</th>
-            <th>Terem</th>
-            <th>Jelzés</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tanulokSzurt.map((t) => (
-            <tr key={t.id}>
-              <td>{t.nev}</td>
-              <td>{t.osztaly}</td>
-              <td>{t.terem}</td>
-              <td>
-                <button className="btn btn-primary btn-sm" onClick={() => jelzesKuldese(t)}>🔔 Jelzés</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {osztalySzuro && (
+        <div className="mt-4">
+          <button className="btn btn-outline-secondary mb-3" onClick={() => setOsztalySzuro('')}>
+            ← Vissza az osztályokhoz
+          </button>
+          <h4 className="mb-3">{osztalySzuro} osztály tanulói:</h4>
+          <table className="table table-bordered table-hover bg-white">
+            <thead>
+              <tr>
+                <th>Név</th>
+                <th>Szakkör</th>
+                <th>Jogosult elvitel</th>
+                <th>Jelzés</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tanulokSzurt.map((t) => (
+                <tr key={t.id}>
+                  <td>{t.nev}</td>
+                  <td>
+                    {t.szakkor ? (
+                      <span className="badge bg-info">Szakkörön van</span>
+                    ) : '-'}
+                  </td>
+                  <td>
+                    {t.csakJogosult ? (
+                      <span className="text-danger fw-bold">🔒 Ellenőrzés szükséges</span>
+                    ) : '✔️'}
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => jelzesKuldese(t)}
+                    >
+                      🔔 Jelzés
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
