@@ -13,13 +13,15 @@ import TanulokOldal from './pages/TanulokOldal';
 import PortasOldal from './pages/PortasOldal';
 import BelepesekOldal from './pages/BelepesekOldal';
 import ProfilOldal from './pages/ProfilOldal';
+import Footer from './components/Footer'; // Globális lábléc minden oldalon
 
 
 function App() {
   return (
     <Router>
+      <div className="d-flex flex-column min-vh-100"></div>
       <Navbar /> {/* Globális navigációs sáv minden oldalon */}
-      <Routes>
+      <Routes>      
         <Route path="/" element={<KezdoOldal />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -29,7 +31,9 @@ function App() {
         <Route path="/admin/profil" element={<ProfilOldal />} />
         <Route path="/portas" element={<PortasOldal />} />
       </Routes>
+      <Footer />
     </Router>
+    
   );
 }
 
