@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import OsztalySzerkesztoModal from '../components/OsztalySzerkesztoModal';
 
 function OsztalyokOldal() {
   const [osztalyok, setOsztalyok] = useState([]);
