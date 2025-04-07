@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
-import TanteremModal from '../pages/TanteremModaljsx';
+import TanteremModal from './TanteremModal.jsx';
 import TanteremLista from '../pages/TanteremLista';
 
 const Navbar = () =>
