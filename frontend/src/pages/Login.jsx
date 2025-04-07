@@ -1,31 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { login } from '../api/authApi';
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [felhasznalonev, setFelhasznalonev] = useState('');
+  const [jelszo, setJelszo] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await axios.post('/api/Auth/login', {
-        felhasznalonev: username,
-        jelszo: password,
-      });
-      
+      const { username, role } = await login(felhasznalonev, jelszo);
 
-      // Feltételezzük, hogy a válaszban jön:
-      // { username: 'admin', role: 'admin', token: '...' }
-      const { username: uname, role, token } = res.data;
-
-      // Mentés localStorage-be
-      localStorage.setItem('username', uname);
+      localStorage.setItem('username', username);
       localStorage.setItem('role', role);
-      if (token) {
-        localStorage.setItem('token', token); // ha használod
-      }
 
       alert('Sikeres bejelentkezés!');
 
@@ -38,11 +27,11 @@ function Login() {
           navigate('/portas');
           break;
         default:
-          navigate('/'); // vagy: navigate('/kezdooldal')
+          navigate('/');
           break;
       }
     } catch (err) {
-      alert('Hiba: ' + (err.response?.data?.message || err.message));
+      alert('Hibás bejelentkezés: ' + (err.response?.data || err.message));
     }
   };
 
@@ -55,22 +44,25 @@ function Login() {
           <input
             type="text"
             className="form-control"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={felhasznalonev}
+            onChange={(e) => setFelhasznalonev(e.target.value)}
             required
           />
         </div>
+
         <div className="mb-3">
           <label className="form-label">Jelszó</label>
           <input
             type="password"
             className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={jelszo}
+            onChange={(e) => setJelszo(e.target.value)}
             required
           />
         </div>
+
         <button type="submit" className="btn btn-primary">Belépés</button>
+
         <p className="mt-3">
           Nincs még fiókod? <Link to="/register">Regisztrálj itt</Link>
         </p>
@@ -80,5 +72,6 @@ function Login() {
 }
 
 export default Login;
+
 
 

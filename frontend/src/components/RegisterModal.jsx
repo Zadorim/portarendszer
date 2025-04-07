@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import { register } from '../api/authApi';
 
-const RegisterModal = ({ show, handleClose }) =>
-{
+const RegisterModal = ({ show, handleClose }) => {
   const [felhasznalonev, setFelhasznalonev] = useState('');
   const [jelszo, setJelszo] = useState('');
   const [megerosites, setMegerosites] = useState('');
@@ -11,19 +10,16 @@ const RegisterModal = ({ show, handleClose }) =>
   const [email, setEmail] = useState('');
   const [beosztas, setBeosztas] = useState('');
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (jelszo !== megerosites)
-    {
+    if (jelszo !== megerosites) {
       alert("A jelszavak nem egyeznek!");
       return;
     }
 
-    try
-    {
-      await axios.post('http://localhost:5072/api/Auth/register', {
+    try {
+      await register({
         felhasznalonev,
         jelszo,
         nev,
@@ -34,9 +30,8 @@ const RegisterModal = ({ show, handleClose }) =>
       alert('Sikeres regisztráció!');
       handleClose();
       window.location.reload();
-    } catch (err)
-    {
-      alert('Hiba: ' + (err.response?.data || err.message));
+    } catch (err) {
+      alert('Hiba a regisztrációnál: ' + (err.response?.data || err.message));
     }
   };
 
@@ -49,22 +44,41 @@ const RegisterModal = ({ show, handleClose }) =>
         <Form onSubmit={handleRegister}>
           <Form.Group className="mb-3">
             <Form.Label>Felhasználónév</Form.Label>
-            <Form.Control type="text" value={felhasznalonev} onChange={(e) => setFelhasznalonev(e.target.value)} required />
+            <Form.Control
+              type="text"
+              value={felhasznalonev}
+              onChange={(e) => setFelhasznalonev(e.target.value)}
+              required
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Teljes név</Form.Label>
-            <Form.Control type="text" value={nev} onChange={(e) => setNev(e.target.value)} required />
+            <Form.Control
+              type="text"
+              value={nev}
+              onChange={(e) => setNev(e.target.value)}
+              required
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Form.Control
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Beosztás</Form.Label>
-            <Form.Select value={beosztas} onChange={(e) => setBeosztas(e.target.value)} required>
+            <Form.Select
+              value={beosztas}
+              onChange={(e) => setBeosztas(e.target.value)}
+              required
+            >
               <option value="">Válassz beosztást</option>
               <option value="admin">Admin</option>
               <option value="portas">Portás</option>
@@ -74,12 +88,22 @@ const RegisterModal = ({ show, handleClose }) =>
 
           <Form.Group className="mb-3">
             <Form.Label>Jelszó</Form.Label>
-            <Form.Control type="password" value={jelszo} onChange={(e) => setJelszo(e.target.value)} required />
+            <Form.Control
+              type="password"
+              value={jelszo}
+              onChange={(e) => setJelszo(e.target.value)}
+              required
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Jelszó megerősítése</Form.Label>
-            <Form.Control type="password" value={megerosites} onChange={(e) => setMegerosites(e.target.value)} required />
+            <Form.Control
+              type="password"
+              value={megerosites}
+              onChange={(e) => setMegerosites(e.target.value)}
+              required
+            />
           </Form.Group>
 
           <Button variant="info" type="submit">Regisztráció</Button>
@@ -90,3 +114,4 @@ const RegisterModal = ({ show, handleClose }) =>
 };
 
 export default RegisterModal;
+

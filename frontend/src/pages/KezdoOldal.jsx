@@ -64,7 +64,7 @@ const KezdoOldal = () => {
             />
           </h1>
           <p className="fs-5">
-            Ez egy egyedül álló hívó és jelzőrendszer, ami megkönnyíti az itt dolgozók, a tanulók és a szülők mindennapját.
+            Ez egy egyedülálló hívó és jelzőrendszer, ami megkönnyíti az itt dolgozók, a tanulók és a szülők mindennapját.
             <br />
             Bátran kérj segítséget!
           </p>

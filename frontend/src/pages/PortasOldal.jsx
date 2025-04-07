@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { getTanulok, getTanuloById, createTanulo, updateTanulo, deleteTanulo } from '../api/tanuloApi';
+import { getTanarok } from '../api/tanarApi';
+import { getTermek } from '../api/teremApi';
+import { getOsztalyok, updateOsztaly } from '../api/osztalyApi';
+
+
 
 function PortasOldal() {
   const [tanulok, setTanulok] = useState([]);
   const [osztalySzuro, setOsztalySzuro] = useState('');
 
   useEffect(() => {
-    axios.get('/api/Tanulo')
-      .then(res => setTanulok(res.data))
-      .catch(err => console.error('Hiba a tanulók lekérésekor:', err));
+    getTanulok()
+      .then(data => setTanulok(data))
+      .catch(err => console.error('Tanulók betöltési hiba:', err));
   }, []);
+  
 
   // Osztálykártyák előkészítése egyedi osztálynév szerint (tanterem + tanár is jön)
   const osztalyok = [
