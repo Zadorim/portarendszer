@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
+import TanteremModal from '../pages/TanteremModaljsx';
+import TanteremLista from '../pages/TanteremLista';
 
 const Navbar = () =>
 {
@@ -65,6 +67,11 @@ const Navbar = () =>
                     <Link className="nav-link" to="/admin/tanulok">
                       <i className="bi bi-people-fill me-1"></i>Tanulók
                     </Link>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/admin/tanterem">
+                        <i className="bi bi-easel-fill me-1"></i>Tanteremek
+                      </Link>
+                    </li>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/admin/belepesek">

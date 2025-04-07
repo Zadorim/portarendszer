@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminNavbar from '../components/AdminNavbar';
 
+
 function AdminOldal() {
   const [tanulok, setTanulok] = useState([]);
   const [ujTanulo, setUjTanulo] = useState({ nev: '', osztaly: '', terem: '', jogosultHazavivok: '' });

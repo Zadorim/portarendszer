@@ -17,6 +17,7 @@ import BelepesekOldal from './pages/BelepesekOldal';
 import ProfilOldal from './pages/ProfilOldal';
 import OsztalyokOldal from './pages/OsztalyokOldal';
 import Footer from './components/Footer';
+import TanteremLista from './pages/TanteremLista';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path="/admin/profil" element={<ProfilOldal />} />
           <Route path="/portas" element={<PortasOldal />} />
           <Route path="/admin/osztalyok" element={<OsztalyokOldal />} />
+          <Route path="/admin/tanterem" element={<TanteremLista />} />        
+
         </Routes>
         <Footer />
       </div>
