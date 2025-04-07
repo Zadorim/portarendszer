@@ -3,16 +3,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
 
-const Navbar = () => {
+const Navbar = () =>
+{
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const username = localStorage.getItem("username");
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = () =>
+  {
     localStorage.removeItem("role");
     localStorage.removeItem("username");
+    localStorage.removeItem("token");
     navigate('/');
   };
 

@@ -1,27 +1,49 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
 
-const LoginModal = ({ show, handleClose }) => {
+const LoginModal = ({ show, handleClose }) =>
+{
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e) =>
+  {
     e.preventDefault();
-    try {
-      const res = await axios.post('/api/Auth/login', {
+    try
+    {
+      const res = await axios.post('http://localhost:5072/api/Auth/login', {
         felhasznalonev: username,
         jelszo: password
       });
 
       const { username: uname, role, token } = res.data;
-      localStorage.setItem('username', uname);
-      localStorage.setItem('role', role);
+
       if (token) localStorage.setItem('token', token);
+      var decodeToken = jwtDecode(token);
+      localStorage.setItem('username', decodeToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]);
+      localStorage.setItem('role', decodeToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
 
       alert('Sikeres bejelentkezés!');
-      window.location.reload(); // frissíti a Navbar-t
-    } catch (err) {
+      window.location.reload();
+       // Navigáció szerepkör szerint:
+       switch (role) {
+        case "admin":
+          navigate("/admin");
+          break;
+        case "portas":
+          navigate("/portas");
+          break;
+        default:
+          navigate("/");
+          break;
+      }
+    }
+    catch (err)
+    {
       alert('Hibás bejelentkezés: ' + (err.response?.data || err.message));
     }
   };

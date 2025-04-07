@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-const RegisterModal = ({ show, handleClose }) => {
+const RegisterModal = ({ show, handleClose }) =>
+{
   const [felhasznalonev, setFelhasznalonev] = useState('');
   const [jelszo, setJelszo] = useState('');
   const [megerosites, setMegerosites] = useState('');
@@ -10,16 +11,19 @@ const RegisterModal = ({ show, handleClose }) => {
   const [email, setEmail] = useState('');
   const [beosztas, setBeosztas] = useState('');
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
-    if (jelszo !== megerosites) {
+    if (jelszo !== megerosites)
+    {
       alert("A jelszavak nem egyeznek!");
       return;
     }
 
-    try {
-      await axios.post('/api/Auth/register', {
+    try
+    {
+      await axios.post('http://localhost:5072/api/Auth/register', {
         felhasznalonev,
         jelszo,
         nev,
@@ -30,7 +34,8 @@ const RegisterModal = ({ show, handleClose }) => {
       alert('Sikeres regisztráció!');
       handleClose();
       window.location.reload();
-    } catch (err) {
+    } catch (err)
+    {
       alert('Hiba: ' + (err.response?.data || err.message));
     }
   };
@@ -85,4 +90,3 @@ const RegisterModal = ({ show, handleClose }) => {
 };
 
 export default RegisterModal;
-
