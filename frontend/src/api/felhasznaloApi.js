@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const API_BASE = 'http://localhost:5072/api/Felhasznalo';
 
 /**
@@ -28,19 +27,20 @@ export const getFelhasznaloById = async (id) => {
   }
 };
 
-/**
- * Csak tanárok lekérése
- */
 export const getTanarok = async () => {
   try {
-    const res = await axios.get(`${API_BASE}/tanarok`);
+    const token = localStorage.getItem('token');
+    const res = await axios.get(`${API_BASE}/tanarok`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
-    console.error('Tanárok lekérése sikertelen:', err);
+    console.error("❌ Tanárok lekérése sikertelen:", err);
     throw err;
   }
 };
-
 /**
  * Felhasználó törlése
  */

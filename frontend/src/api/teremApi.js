@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const BASE_URL = 'http://localhost:5072/api/Tanterem';
 
 /**
@@ -57,7 +56,6 @@ export const updateTanterem = async (id, tanteremData) => {
     throw error;
   }
 };
-
 /**
  * Tanterem törlése
  * @param {number} id 

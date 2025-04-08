@@ -7,7 +7,12 @@ const API_BASE = 'http://localhost:5072/api/Osztaly';
  */
 export const getOsztalyok = async () => {
   try {
-    const res = await axios.get(API_BASE);
+    const token = localStorage.getItem('token');
+    const res = await axios.get(API_BASE, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
     console.error('❌ Osztályok lekérése sikertelen:', err);
@@ -20,7 +25,12 @@ export const getOsztalyok = async () => {
  */
 export const getOsztalyById = async (id) => {
   try {
-    const res = await axios.get(`${API_BASE}/${id}`);
+    const token = localStorage.getItem('token');
+    const res = await axios.get(`${API_BASE}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
     console.error(`❌ Osztály lekérése sikertelen ID: ${id}`, err);
@@ -33,7 +43,12 @@ export const getOsztalyById = async (id) => {
  */
 export const createOsztaly = async (osztaly) => {
   try {
-    const res = await axios.post(API_BASE, osztaly);
+    const token = localStorage.getItem('token');
+    const res = await axios.post(API_BASE, osztaly, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
     console.error('❌ Osztály létrehozása sikertelen:', err);
@@ -46,7 +61,12 @@ export const createOsztaly = async (osztaly) => {
  */
 export const updateOsztaly = async (id, osztaly) => {
   try {
-    await axios.put(`${API_BASE}/${id}`, osztaly);
+    const token = localStorage.getItem('token');
+    await axios.put(`${API_BASE}/${id}`, osztaly, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (err) {
     console.error(`❌ Osztály frissítése sikertelen ID: ${id}`, err);
     throw err;
@@ -58,11 +78,17 @@ export const updateOsztaly = async (id, osztaly) => {
  */
 export const deleteOsztaly = async (id) => {
   try {
-    await axios.delete(`${API_BASE}/${id}`);
+    const token = localStorage.getItem('token');
+    await axios.delete(`${API_BASE}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (err) {
     console.error(`❌ Osztály törlése sikertelen ID: ${id}`, err);
     throw err;
   }
 };
+
 
 

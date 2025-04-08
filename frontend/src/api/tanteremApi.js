@@ -1,13 +1,17 @@
 import axios from 'axios';
-
-const API_BASE = 'http://localhost:5072/api/Tanterem';
+const API_BASE = 'http://localhost:5072/api';
 
 /**
  * Összes tanterem lekérése
  */
 export const getTanteremek = async () => {
   try {
-    const res = await axios.get(API_BASE);
+    const token = localStorage.getItem('token');
+    const res = await axios.get(`${API_BASE}/Tanterem`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
     console.error('❌ Tantermek lekérése sikertelen:', err);
@@ -20,7 +24,12 @@ export const getTanteremek = async () => {
  */
 export const getTanteremById = async (id) => {
   try {
-    const res = await axios.get(`${API_BASE}/${id}`);
+    const token = localStorage.getItem('token');
+    const res = await axios.get(`${API_BASE}/Tanterem/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
     console.error(`❌ Tanterem lekérése sikertelen ID: ${id}`, err);
@@ -33,7 +42,12 @@ export const getTanteremById = async (id) => {
  */
 export const createTanterem = async (tanterem) => {
   try {
-    const res = await axios.post(API_BASE, tanterem);
+    const token = localStorage.getItem('token');
+    const res = await axios.post(`${API_BASE}/Tanterem`, tanterem, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
     console.error('❌ Tanterem létrehozása sikertelen:', err);
@@ -46,7 +60,12 @@ export const createTanterem = async (tanterem) => {
  */
 export const updateTanterem = async (id, tanterem) => {
   try {
-    await axios.put(`${API_BASE}/${id}`, tanterem);
+    const token = localStorage.getItem('token');
+    await axios.put(`${API_BASE}/Tanterem/${id}`, tanterem, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (err) {
     console.error(`❌ Tanterem frissítése sikertelen ID: ${id}`, err);
     throw err;
@@ -58,7 +77,12 @@ export const updateTanterem = async (id, tanterem) => {
  */
 export const deleteTanterem = async (id) => {
   try {
-    await axios.delete(`${API_BASE}/${id}`);
+    const token = localStorage.getItem('token');
+    await axios.delete(`${API_BASE}/Tanterem/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (err) {
     console.error(`❌ Tanterem törlése sikertelen ID: ${id}`, err);
     throw err;

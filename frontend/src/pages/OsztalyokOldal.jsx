@@ -1,60 +1,179 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import OsztalySzerkesztoModal from '../components/OsztalySzerkesztoModal';
+import {
+  getOsztalyok,
+  createOsztaly,
+  updateOsztaly,
+  deleteOsztaly
+} from '../api/osztalyApi';
+import { Button, Table, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
 
 function OsztalyokOldal() {
   const [osztalyok, setOsztalyok] = useState([]);
-  const [hiba, setHiba] = useState('');
+  const [szuro, setSzuro] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [kivalasztott, setKivalasztott] = useState(null);
+  const [formData, setFormData] = useState({
+    nev: '',
+    egyediAzonosito: '',
+    osztalyfonokNev: ''
+  });
 
   useEffect(() => {
-    axios.get('/api/Osztaly')
-      .then(res => setOsztalyok(res.data))
-      .catch(() => setHiba('Hiba az osztályok lekérésekor.'));
+    betoltOsztalyokat();
   }, []);
+
+  const betoltOsztalyokat = async () => {
+    try {
+      const adatok = await getOsztalyok();
+      setOsztalyok(adatok);
+    } catch (err) {
+      alert('Hiba az osztályok betöltésekor!');
+    }
+  };
+
+  const kezelesUj = () => {
+    setKivalasztott(null);
+    setFormData({
+      nev: '',
+      egyediAzonosito: '',
+      osztalyfonokNev: ''
+    });
+    setShowModal(true);
+  };
+
+  const kezelesSzerkesztes = (osztaly) => {
+    setKivalasztott(osztaly);
+    setFormData({
+      nev: osztaly.nev,
+      egyediAzonosito: osztaly.egyediAzonosito || '',
+      osztalyfonokNev: osztaly.osztalyfonokNev || ''
+    });
+    setShowModal(true);
+  };
+
+  const mentes = async () => {
+    try {
+      if (kivalasztott?.id) {
+        await updateOsztaly(kivalasztott.id, formData);
+      } else {
+        await createOsztaly(formData);
+      }
+      setShowModal(false);
+      betoltOsztalyokat();
+    } catch (err) {
+      alert('Mentés sikertelen!');
+      console.error(err);
+    }
+  };
+
+  const torles = async (id) => {
+    if (window.confirm('Biztosan törlöd ezt az osztályt?')) {
+      try {
+        await deleteOsztaly(id);
+        betoltOsztalyokat();
+      } catch (err) {
+        alert('Törlés sikertelen!');
+      }
+    }
+  };
+
+  const szurtLista = osztalyok.filter((o) =>
+    o.nev.toLowerCase().includes(szuro.toLowerCase()) ||
+    (o.osztalyfonokNev || '').toLowerCase().includes(szuro.toLowerCase())
+  );
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Osztálykezelő felület</h2>
+      <h2>Osztályok kezelése</h2>
 
-      {hiba && <div className="alert alert-danger">{hiba}</div>}
+      <InputGroup className="my-3">
+        <FormControl
+          placeholder="Keresés osztály vagy osztályfőnök alapján..."
+          value={szuro}
+          onChange={(e) => setSzuro(e.target.value)}
+        />
+        <Button variant="success" onClick={kezelesUj}>➕ Új osztály</Button>
+      </InputGroup>
 
-      <div className="table-responsive">
-        <table className="table table-bordered table-hover bg-white">
-          <thead className="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Osztály neve</th>
-              <th>Egyedi azonosító</th>
-              <th>Osztályfőnök</th>
-              <th>Műveletek</th>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Név</th>
+            <th>Azonosító</th>
+            <th>Osztályfőnök</th>
+            <th>Műveletek</th>
+          </tr>
+        </thead>
+        <tbody>
+          {szurtLista.map((o) => (
+            <tr key={o.id}>
+              <td>{o.nev}</td>
+              <td>{o.egyediAzonosito}</td>
+              <td>{o.osztalyfonokNev || '-'}</td>
+              <td>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  className="me-2"
+                  onClick={() => kezelesSzerkesztes(o)}
+                >
+                  ✏️
+                </Button>
+                <Button
+                  size="sm"
+                  variant="danger"
+                  onClick={() => torles(o.id)}
+                >
+                  🗑️
+                </Button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {osztalyok.map((o, index) => (
-              <tr key={o.id}>
-                <td>{index + 1}</td>
-                <td>{o.nev}</td>
-                <td>{o.egyediAzonosito || '-'}</td>
-                <td>{o.osztalyfonokNev || <span className="text-muted">Ismeretlen</span>}</td>
-                <td>
-                  <button className="btn btn-sm btn-outline-primary me-2">
-                    ✏️ Szerkesztés
-                  </button>
-                  <button className="btn btn-sm btn-outline-danger">
-                    🗑️ Törlés
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </Table>
 
-      <button className="btn btn-success mt-3">
-        ➕ Új osztály hozzáadása
-      </button>
+      {/* MODAL ablak */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{kivalasztott ? 'Osztály szerkesztése' : 'Új osztály'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Osztály neve</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.nev}
+                onChange={(e) => setFormData({ ...formData, nev: e.target.value })}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Egyedi azonosító</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.egyediAzonosito}
+                onChange={(e) => setFormData({ ...formData, egyediAzonosito: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Osztályfőnök neve</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.osztalyfonokNev}
+                onChange={(e) => setFormData({ ...formData, osztalyfonokNev: e.target.value })}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Mégse</Button>
+          <Button variant="primary" onClick={mentes}>Mentés</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
 
 export default OsztalyokOldal;
+

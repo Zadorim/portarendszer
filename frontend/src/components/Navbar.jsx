@@ -2,19 +2,15 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
-import TanteremModal from './TanteremModal.jsx';
-import TanteremLista from '../pages/TanteremLista';
 
-const Navbar = () =>
-{
+const Navbar = () => {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const username = localStorage.getItem("username");
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
-  const handleLogout = () =>
-  {
+  const handleLogout = () => {
     localStorage.removeItem("role");
     localStorage.removeItem("username");
     localStorage.removeItem("token");
@@ -67,11 +63,6 @@ const Navbar = () =>
                     <Link className="nav-link" to="/admin/tanulok">
                       <i className="bi bi-people-fill me-1"></i>Tanulók
                     </Link>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/admin/tanterem">
-                        <i className="bi bi-easel-fill me-1"></i>Tanteremek
-                      </Link>
-                    </li>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/admin/belepesek">
@@ -81,6 +72,11 @@ const Navbar = () =>
                   <li className="nav-item">
                     <Link className="nav-link" to="/admin/osztalyok">
                       <i className="bi bi-building me-1"></i>Osztályok
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/admin/tanterem">
+                      <i className="bi bi-door-closed me-1"></i>Tantermek
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -126,3 +122,5 @@ const Navbar = () =>
 };
 
 export default Navbar;
+
+

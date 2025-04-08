@@ -1,16 +1,21 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:5072/api/Tanulo'; // vagy relatív útvonal: '/api/Tanulo'
+const API_BASE = 'http://localhost:5072/api/Tanulo';
 
 /**
  * Összes tanuló lekérése
  */
 export const getTanulok = async () => {
   try {
-    const res = await axios.get(API_BASE);
+    const token = localStorage.getItem('token');
+    const res = await axios.get(API_BASE, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
-    console.error('Tanulók lekérése sikertelen:', err);
+    console.error('❌ Tanulók lekérése sikertelen:', err);
     throw err;
   }
 };
@@ -20,23 +25,33 @@ export const getTanulok = async () => {
  */
 export const getTanuloById = async (id) => {
   try {
-    const res = await axios.get(`${API_BASE}/${id}`);
+    const token = localStorage.getItem('token');
+    const res = await axios.get(`${API_BASE}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
-    console.error(`Tanuló lekérése sikertelen ID: ${id}`, err);
+    console.error(`❌ Tanuló lekérése sikertelen ID: ${id}`, err);
     throw err;
   }
 };
 
 /**
- * Új tanuló hozzáadása
+ * Új tanuló létrehozása
  */
 export const createTanulo = async (tanulo) => {
   try {
-    const res = await axios.post(API_BASE, tanulo);
+    const token = localStorage.getItem('token');
+    const res = await axios.post(API_BASE, tanulo, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data;
   } catch (err) {
-    console.error('Tanuló hozzáadása sikertelen:', err);
+    console.error('❌ Tanuló létrehozása sikertelen:', err);
     throw err;
   }
 };
@@ -46,9 +61,14 @@ export const createTanulo = async (tanulo) => {
  */
 export const updateTanulo = async (id, tanulo) => {
   try {
-    await axios.put(`${API_BASE}/${id}`, tanulo);
+    const token = localStorage.getItem('token');
+    await axios.put(`${API_BASE}/${id}`, tanulo, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (err) {
-    console.error(`Tanuló frissítése sikertelen ID: ${id}`, err);
+    console.error(`❌ Tanuló frissítése sikertelen ID: ${id}`, err);
     throw err;
   }
 };
@@ -58,9 +78,14 @@ export const updateTanulo = async (id, tanulo) => {
  */
 export const deleteTanulo = async (id) => {
   try {
-    await axios.delete(`${API_BASE}/${id}`);
+    const token = localStorage.getItem('token');
+    await axios.delete(`${API_BASE}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   } catch (err) {
-    console.error(`Tanuló törlése sikertelen ID: ${id}`, err);
+    console.error(`❌ Tanuló törlése sikertelen ID: ${id}`, err);
     throw err;
   }
 };

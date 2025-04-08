@@ -1,39 +1,32 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/authApi';
 
 const LoginModal = ({ show, handleClose }) => {
-  const [felhasznalonev, setFelhasznalonev] = useState('');
-  const [jelszo, setJelszo] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const { username, role } = await login(felhasznalonev, jelszo);
+      const res = await login(username, password); // authApi.js metódus
+      const { token } = res;
 
-      // Mentés localStorage-be
-      localStorage.setItem('username', username);
-      localStorage.setItem('role', role);
+      if (token) localStorage.setItem('token', token);
+
+      const decoded = jwtDecode(token);
+      const usernameDecoded = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+      const roleDecoded = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+      localStorage.setItem('username', usernameDecoded);
+      localStorage.setItem('role', roleDecoded);
 
       alert('Sikeres bejelentkezés!');
-      handleClose();
-
-      // Navigáció szerepkör alapján
-      switch (role) {
-        case 'admin':
-          navigate('/admin');
-          break;
-        case 'portas':
-          navigate('/portas');
-          break;
-        default:
-          navigate('/');
-          break;
-      }
-
+      handleClose(); // Modal bezárása
+      navigate('/redirect'); // szerepkör alapú irányítás
     } catch (err) {
       alert('Hibás bejelentkezés: ' + (err.response?.data || err.message));
     }
@@ -50,22 +43,20 @@ const LoginModal = ({ show, handleClose }) => {
             <Form.Label>Felhasználónév</Form.Label>
             <Form.Control
               type="text"
-              value={felhasznalonev}
-              onChange={(e) => setFelhasznalonev(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </Form.Group>
-
           <Form.Group className="mb-3">
             <Form.Label>Jelszó</Form.Label>
             <Form.Control
               type="password"
-              value={jelszo}
-              onChange={(e) => setJelszo(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </Form.Group>
-
           <Button variant="primary" type="submit">Belépés</Button>
         </Form>
       </Modal.Body>
@@ -74,5 +65,6 @@ const LoginModal = ({ show, handleClose }) => {
 };
 
 export default LoginModal;
+
 
 

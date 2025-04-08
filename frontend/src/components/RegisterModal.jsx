@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';;
 import { register } from '../api/authApi';
 
 const RegisterModal = ({ show, handleClose }) => {
@@ -19,19 +19,12 @@ const RegisterModal = ({ show, handleClose }) => {
     }
 
     try {
-      await register({
-        felhasznalonev,
-        jelszo,
-        nev,
-        email,
-        beosztas
-      });
-
-      alert('Sikeres regisztráció!');
+      await register({ felhasznalonev, jelszo, nev, email, beosztas });
+      alert("Sikeres regisztráció!");
       handleClose();
-      window.location.reload();
+      window.location.reload(); // Frissít a navbar-hoz
     } catch (err) {
-      alert('Hiba a regisztrációnál: ' + (err.response?.data || err.message));
+      alert("Hiba a regisztráció során: " + (err.response?.data || err.message));
     }
   };
 
@@ -74,12 +67,8 @@ const RegisterModal = ({ show, handleClose }) => {
 
           <Form.Group className="mb-3">
             <Form.Label>Beosztás</Form.Label>
-            <Form.Select
-              value={beosztas}
-              onChange={(e) => setBeosztas(e.target.value)}
-              required
-            >
-              <option value="">Válassz beosztást</option>
+            <Form.Select value={beosztas} onChange={(e) => setBeosztas(e.target.value)} required>
+              <option value="">-- válassz beosztást --</option>
               <option value="admin">Admin</option>
               <option value="portas">Portás</option>
               <option value="tanar">Tanár</option>
@@ -105,8 +94,14 @@ const RegisterModal = ({ show, handleClose }) => {
               required
             />
           </Form.Group>
-
-          <Button variant="info" type="submit">Regisztráció</Button>
+          <div className="d-flex justify-content-end">
+            <Button variant="secondary" className="me-2" onClick={handleClose}>
+              Mégse
+            </Button>
+            <Button variant="info" type="submit">
+              Regisztráció
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>

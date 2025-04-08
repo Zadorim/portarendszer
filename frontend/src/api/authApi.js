@@ -1,47 +1,38 @@
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+const API_BASE = 'http://localhost:5072/api';
 
-
-
-export const login = async (username, password) => {
-  const response = await axios.post('/api/Auth/login', {
-    felhasznalonev: username,
-    jelszo: password
-  });
-
-  const { token } = response.data;
-  if (!token) throw new Error("Nincs token a válaszban!");
-
-  // JWT token dekódolás
-  const decoded = jwtDecode(token);
-
-  const nevClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
-  const szerepClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
-
-  const nev = decoded[nevClaim];
-  const szerep = decoded[szerepClaim];
-
-  // Token mentése localStorage-be
-  localStorage.setItem('token', token);
-  localStorage.setItem('username', nev);
-  localStorage.setItem('role', szerep);
-
-  return {
-    username: nev,
-    role: szerep
-  };
+/**
+ * Bejelentkezés
+ * @param {string} felhasznalonev 
+ * @param {string} jelszo 
+ * @returns {Promise<{ token: string }>}
+ */
+export const login = async (felhasznalonev, jelszo) => {
+  try {
+    const res = await axios.post(`${API_BASE}/Auth/login`, {
+      felhasznalonev,
+      jelszo
+    });
+    return res.data;
+  } catch (error) {
+    console.error("❌ Login hiba:", error);
+    throw error;
+  }
 };
 
-export const register = async ({ felhasznalonev, jelszo, nev, email, beosztas }) => {
-  const response = await axios.post('/api/Auth/register', {
-    felhasznalonev,
-    jelszo,
-    nev,
-    email,
-    beosztas
-  });
-
-  return response.data;
+/**
+ * Regisztráció
+ * @param {object} felhasznaloObj 
+ * @returns {Promise<string>}
+ */
+export const register = async (felhasznaloObj) => {
+  try {
+    const res = await axios.post(`${API_BASE}/Auth/register`, felhasznaloObj);
+    return res.data;
+  } catch (error) {
+    console.error("❌ Regisztrációs hiba:", error);
+    throw error;
+  }
 };
 
 

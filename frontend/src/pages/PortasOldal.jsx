@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { getTanulok, getTanuloById, createTanulo, updateTanulo, deleteTanulo } from '../api/tanuloApi';
-import { getTanarok } from '../api/tanarApi';
-import { getTermek } from '../api/teremApi';
-import { getOsztalyok, updateOsztaly } from '../api/osztalyApi';
-
 
 
 function PortasOldal() {

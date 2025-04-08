@@ -14,13 +14,18 @@ const AdminNavbar = () => {
         <div className="collapse navbar-collapse" id="adminNavbar">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-            <Link className="nav-link" to="/admin/tanulok">
-              <i className="bi bi-people-fill me-1"></i> Tanulók
-            </Link>
+              <Link className="nav-link" to="/admin/tanulok">
+                <i className="bi bi-people-fill me-1"></i> Tanulók
+              </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/admin/jelenlet">
                 <i className="bi bi-door-open-fill me-1"></i> Belépések
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/admin/tanterem">
+                <i className="bi bi-building me-1"></i> Tantermek
               </Link>
             </li>
             <li className="nav-item">
@@ -36,3 +41,4 @@ const AdminNavbar = () => {
 };
 
 export default AdminNavbar;
+
