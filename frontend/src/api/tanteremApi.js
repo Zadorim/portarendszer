@@ -1,22 +1,13 @@
 import axios from 'axios';
-const API_BASE = 'http://localhost:5072/api';
 
-/**
- * Összes tanterem lekérése
- */
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/Tanterem`;
+
 export const getTanteremek = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const res = await axios.get(`${API_BASE}/Tanterem`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return res.data;
-  } catch (err) {
-    console.error('❌ Tantermek lekérése sikertelen:', err);
-    throw err;
-  }
+  const token = localStorage.getItem('token');
+  const res = await axios.get(API_BASE, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.data;
 };
 
 /**

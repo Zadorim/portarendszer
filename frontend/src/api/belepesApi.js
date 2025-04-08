@@ -1,17 +1,17 @@
 import axios from 'axios';
-const API_BASE = 'http://localhost:5072/api/Belepes';
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/Belepes`;
 
 /**
  * Összes belépési napló lekérése
  */
 export const getBelepesek = async () => {
-  try {
-    const res = await axios.get(API_BASE);
-    return res.data;
-  } catch (err) {
-    console.error('❌ Hiba a belépési naplók lekérésekor:', err);
-    throw err;
-  }
+  const token = localStorage.getItem('token');
+  const res = await axios.get(API_BASE, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return res.data;
 };
 
 /**

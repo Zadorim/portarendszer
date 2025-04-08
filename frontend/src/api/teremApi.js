@@ -1,6 +1,26 @@
 import axios from 'axios';
-const BASE_URL = 'http://localhost:5072/api/Tanterem';
 
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/TanteremHasznalat`;
+
+export const getTeremHasznalatOsztalyAlapjan = async (osztalyId) => {
+  const token = localStorage.getItem('token');
+  const res = await axios.get(`${API_BASE}/osztaly/${osztalyId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return res.data;
+};
+
+export const mentesTanteremHasznalat = async (payload) => {
+  const token = localStorage.getItem('token');
+  const res = await axios.post(`${API_BASE}/mentes`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return res.data;
+};
 /**
  * Összes tanterem lekérdezése
  */

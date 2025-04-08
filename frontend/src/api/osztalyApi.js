@@ -1,23 +1,13 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:5072/api/Osztaly';
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/Osztaly`;
 
-/**
- * Összes osztály lekérése
- */
 export const getOsztalyok = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const res = await axios.get(API_BASE, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return res.data;
-  } catch (err) {
-    console.error('❌ Osztályok lekérése sikertelen:', err);
-    throw err;
-  }
+  const token = localStorage.getItem('token');
+  const res = await axios.get(API_BASE, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.data;
 };
 
 /**

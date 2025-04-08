@@ -1,17 +1,17 @@
 import axios from 'axios';
-const BASE_URL = 'http://localhost:5072/api/Felhasznalo';
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/Felhasznalo`;
 
 /**
  * Tanárok lekérdezése (csak beosztás = tanár)
  */
 export const getTanarok = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/tanarok`);
-    return res.data;
-  } catch (err) {
-    console.error('Hiba a tanárok lekérdezésekor:', err);
-    throw err;
-  }
+  const token = localStorage.getItem('token');
+  const res = await axios.get(`${API_BASE}/tanarok`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return res.data;
 };
 
 /**

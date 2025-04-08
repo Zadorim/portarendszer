@@ -1,5 +1,14 @@
 import axios from 'axios';
-const API_BASE = 'http://localhost:5072/api/Felhasznalo';
+
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/Felhasznalo`;
+
+export const getTanarok = async () => {
+  const token = localStorage.getItem('token');
+  const res = await axios.get(`${API_BASE}/tanarok`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.data;
+};
 
 /**
  * Összes felhasználó lekérése
@@ -27,20 +36,7 @@ export const getFelhasznaloById = async (id) => {
   }
 };
 
-export const getTanarok = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const res = await axios.get(`${API_BASE}/tanarok`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return res.data;
-  } catch (err) {
-    console.error("❌ Tanárok lekérése sikertelen:", err);
-    throw err;
-  }
-};
+
 /**
  * Felhasználó törlése
  */
