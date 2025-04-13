@@ -1,0 +1,108 @@
+/* 🌞 Alapértelmezett világos mód */
+:root {
+  --card-bg: #fff;
+  --text-color: #212529;
+  --icon-color: #007bff;
+  --bg-color: #f8f9fa;
+  --primary-color: #007bff;
+  --hover-color: #0056b3;
+}
+
+/* 🌙 Sötét mód változók */
+.dark-mode {
+  --card-bg: #2c2f33;
+  --text-color: #f0f0f0;
+  --icon-color: #66b2ff;
+  --bg-color: #181818;
+  --primary-color: #66b2ff;
+  --hover-color: #4d99e6;
+}
+
+/* Alap stílusok */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+/* Admin oldal specifikus */
+.admin-page {
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.content-container {
+  padding: 2rem;
+}
+
+.grid-row {
+  margin-top: 2rem;
+}
+
+/* Kártya stílusok */
+.custom-card {
+  height: 100%;
+  min-height: 280px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2rem;
+}
+
+.icon-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: var(--icon-color);
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+}
+
+.card-button {
+  align-self: center;
+  width: 80%;
+  padding: 0.5rem;
+  font-weight: 500;
+  background-color: var(--primary-color);
+  border: none;
+}
+
+.card-button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Responszív beállítások */
+@media (max-width: 768px) {
+  .content-container {
+    padding: 1rem;
+  }
+  
+  .card-icon {
+    font-size: 2rem;
+  }
+}
