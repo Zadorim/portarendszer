@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+
 function AdminVisszaGomb({ title = null }) {
   const navigate = useNavigate();
 
