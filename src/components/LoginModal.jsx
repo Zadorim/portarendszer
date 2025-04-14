@@ -9,6 +9,7 @@ const LoginModal = ({ show, handleClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ const LoginModal = ({ show, handleClose }) => {
 
       localStorage.setItem('username', usernameDecoded);
       localStorage.setItem('role', roleDecoded);
-      console.log(roleDecoded);
+      
       alert('Sikeres bejelentkezés!');
       handleClose(); // Modal bezárása
       navigate('/redirect'); // szerepkör alapú irányítás
@@ -33,7 +34,7 @@ const LoginModal = ({ show, handleClose }) => {
     }
   };
 
-  return (
+  return (    
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>Bejelentkezés</Modal.Title>

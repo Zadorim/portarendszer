@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 
+
 function OsztalySzerkesztoModal({ osztaly, bezar, frissit }) {
   const [tanarok, setTanarok] = useState([]);
   const [termek, setTermek] = useState([]);
