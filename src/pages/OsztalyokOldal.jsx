@@ -5,11 +5,14 @@ import {
   updateOsztaly,
   deleteOsztaly
 } from '../api/osztalyApi';
-import { Button, Table, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
+import {
+  Button, Table, Modal, Form, InputGroup, FormControl
+} from 'react-bootstrap';
 import { useDarkMode } from '../context/DarkModeContext';
+import AdminVisszaGomb from '../components/AdminVisszaGomb';
 
 function OsztalyokOldal() {
-  const { darkMode } = useDarkMode();
+  const { isDarkMode } = useDarkMode();
   const [osztalyok, setOsztalyok] = useState([]);
   const [szuro, setSzuro] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -23,7 +26,7 @@ function OsztalyokOldal() {
   useEffect(() => {
     betoltOsztalyokat();
   }, []);
-  
+
   const betoltOsztalyokat = async () => {
     try {
       const adatok = await getOsztalyok();
@@ -35,11 +38,7 @@ function OsztalyokOldal() {
 
   const kezelesUj = () => {
     setKivalasztott(null);
-    setFormData({
-      nev: '',
-      egyediAzonosito: '',
-      osztalyfonokNev: ''
-    });
+    setFormData({ nev: '', egyediAzonosito: '', osztalyfonokNev: '' });
     setShowModal(true);
   };
 
@@ -85,7 +84,8 @@ function OsztalyokOldal() {
   );
 
   return (
-    <div className={`p-4 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`} style={{ minHeight: '100vh' }}>
+    <div className={`p-4 ${isDarkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`} style={{ minHeight: '100vh' }}>
+      <AdminVisszaGomb />
       <h2 className="text-center mb-4">Osztályok kezelése</h2>
 
       <InputGroup className="mb-3">
@@ -93,12 +93,12 @@ function OsztalyokOldal() {
           placeholder="Keresés osztály vagy osztályfőnök alapján..."
           value={szuro}
           onChange={(e) => setSzuro(e.target.value)}
-          className={darkMode ? 'bg-dark text-light border-secondary' : ''}
+          className={isDarkMode ? 'bg-dark text-light border-secondary' : ''}
         />
         <Button variant="success" onClick={kezelesUj}>➕ Új osztály</Button>
       </InputGroup>
 
-      <Table striped bordered hover responsive className={darkMode ? 'table-dark' : ''}>
+      <Table striped bordered hover responsive className={isDarkMode ? 'table-dark' : ''}>
         <thead>
           <tr>
             <th>Név</th>
@@ -114,21 +114,8 @@ function OsztalyokOldal() {
               <td>{o.egyediAzonosito}</td>
               <td>{o.osztalyfonokNev || '-'}</td>
               <td>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  className="me-2"
-                  onClick={() => kezelesSzerkesztes(o)}
-                >
-                  ✏️
-                </Button>
-                <Button
-                  size="sm"
-                  variant="danger"
-                  onClick={() => torles(o.id)}
-                >
-                  🗑️
-                </Button>
+                <Button size="sm" variant="primary" className="me-2" onClick={() => kezelesSzerkesztes(o)}>✏️</Button>
+                <Button size="sm" variant="danger" onClick={() => torles(o.id)}>🗑️</Button>
               </td>
             </tr>
           ))}
@@ -136,7 +123,7 @@ function OsztalyokOldal() {
       </Table>
 
       {/* Modal ablak */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered dialogClassName={isDarkMode ? 'modal-dark' : ''}>
         <Modal.Header closeButton>
           <Modal.Title>{kivalasztott ? 'Osztály szerkesztése' : 'Új osztály'}</Modal.Title>
         </Modal.Header>
@@ -179,4 +166,3 @@ function OsztalyokOldal() {
 }
 
 export default OsztalyokOldal;
-

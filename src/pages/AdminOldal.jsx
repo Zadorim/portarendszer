@@ -5,13 +5,13 @@ import { useDarkMode } from '../context/DarkModeContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-function AdminOldal() {
+const AdminOldal = () => {
   const navigate = useNavigate();
-  const { darkMode } = useDarkMode();
+  const { isDarkMode } = useDarkMode();  
 
   // Menüpontok konfigurációja
   const menupontok = [
-    {
+    {   
       cim: 'Tantermek kezelése',
       leiras: 'Új tantermek hozzáadása, szerkesztése és törlése',
       icon: 'bi-door-closed',
@@ -40,34 +40,41 @@ function AdminOldal() {
       leiras: 'Személyes adatok megtekintése, szerkesztése',
       icon: 'bi-person-circle',
       utvonal: '/admin/profil'
-    }
+    }       
   ];
-  
-  return (
-    <div 
-      className={`min-vh-100 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}
-      data-bs-theme={darkMode ? 'dark' : 'light'}
-    >
-      <Container className="py-4">
-        <h2 className="text-center mb-4">Admin vezérlőpult</h2>       
-        
+
+  return (    
+    <div className={`min-vh-100 ${isDarkMode ? 'bg-dark text-light' : 'bg-light'}`}>  
+    <Container className={`admin-oldal py-5 ${isDarkMode ? 'dark-mode' : ''}`}>
+        <h1 className="text-center mb-4 fw-bold">Admin vezérlőpult</h1>       
         <Row xs={1} md={2} lg={3} className="g-4">
           {menupontok.map((menu, index) => (
             <Col key={index}>
               <Card 
-                className={`h-100 shadow border-0 ${darkMode ? 'bg-secondary' : ''}`}
-                style={{ minHeight: '250px' }}
+                className={`h-100 shadow-sm transition-all ${isDarkMode ? 'bg-gray-800 border-dark' : 'bg-white'}`}              
+                style={{
+                  minHeight: '250px',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  cursor: 'pointer'
+                }}
+                onClick={() => navigate(menu.utvonal)}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = ''}
               >
-                <Card.Body className="d-flex flex-column text-center">
+                <Card.Body className="d-flex flex-column text-center p-4">
                   <div className="mb-3">
-                    <i className={`bi ${menu.icon} display-4 text-primary`} />
+                    <i className={`bi ${menu.icon} display-4 ${isDarkMode ? 'text-primary' : 'text-primary'}`} />
                   </div>
-                  <Card.Title className="mb-2">{menu.cim}</Card.Title>
-                  <Card.Text className="flex-grow-1">{menu.leiras}</Card.Text>
+                  <Card.Title className="mb-2 fs-4 fw-bold">{menu.cim}</Card.Title>
+                  <Card.Text className={`flex-grow-1 ${isDarkMode ? 'text-light-soft' : 'text-muted'}`}> {menu.leiras}
+                  </Card.Text>
                   <Button 
-                    variant="primary" 
-                    onClick={() => navigate(menu.utvonal)}
-                    className="mt-auto"
+                    variant={isDarkMode ? "outline-primary" : "primary"} 
+                    className="mt-auto align-self-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(menu.utvonal);
+                    }}
                   >
                     Megnyitás
                   </Button>

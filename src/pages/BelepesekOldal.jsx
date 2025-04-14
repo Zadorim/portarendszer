@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDarkMode } from '../context/DarkModeContext';
+import AdminVisszaGomb from '../components/AdminVisszaGomb';
 
 const BelepesekOldal = () => {
   const [felhasznalok, setFelhasznalok] = useState([]);
@@ -25,7 +26,8 @@ const BelepesekOldal = () => {
   };
 
   return (
-    <div className={`container mt-4 ${darkMode ? 'text-light' : 'text-dark'}`}>
+    <div className={`belepesek-oldal container mt-4 ${darkMode ? 'dark-mode' : ''}`}>
+      <AdminVisszaGomb />
       <h2 className="mb-4">Belépési napló</h2>
 
       <div className="table-responsive">

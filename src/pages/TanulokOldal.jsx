@@ -7,6 +7,7 @@ import {
 } from "../api/tanuloApi";
 import { Button, Modal, Form, Table } from "react-bootstrap";
 import { useDarkMode } from "../context/DarkModeContext";
+import AdminVisszaGomb from '../components/AdminVisszaGomb';
 
 function TanulokOldal() {
   const { darkMode } = useDarkMode();
@@ -93,6 +94,7 @@ function TanulokOldal() {
   return (
     <div className={`container mt-5 ${darkMode ? "text-light bg-dark" : ""}`}>
       <div className="d-flex justify-content-between align-items-center mb-3">
+        <AdminVisszaGomb />
         <h2>Tanulók kezelése</h2>
         <Button variant="success" onClick={kezelesUj}>
           ➕ Új tanuló

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getTanulok } from "../api/tanuloApi";
-import { useDarkMode } from "../context/DarkModeContext"
-import { Link } from "react-router-dom";
+import { useDarkMode } from "../context/DarkModeContext";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 function PortasOldal() {
-  const { darkMode } = useDarkMode();
+  const { isDarkMode } = useDarkMode();
+  const navigate = useNavigate();
   const [tanulok, setTanulok] = useState([]);
   const [osztalySzuro, setOsztalySzuro] = useState("");
 
@@ -48,29 +49,44 @@ function PortasOldal() {
   };
 
   return (
-    <div className={`min-vh-100 p-4 ${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}>
-      <h2 className="text-center mb-4">Portás felület</h2>
+    <div
+      className={`container-fluid py-4 portas-hatter ${isDarkMode ? "dark-mode" : ""}`}
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL + '/iskola_hatter.jpg'})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+        backgroundPosition: 'center',
+        filter: isDarkMode ? 'grayscale(100%) brightness(0.7)' : 'none',
+        minHeight: '100vh'
+      }}
+    >
+      <h2 className="text-center fw-bold mb-4">Portás felület</h2>
+
+      <div className="d-flex justify-content-center mb-4 gap-2">
+        <button className="btn btn-outline-primary" onClick={() => navigate('/admin')}>
+          <i className="bi bi-speedometer2 me-1 text-white"></i>Admin felület
+        </button>
+        <button className="btn btn-outline-secondary" onClick={() => navigate('/profil')}>
+          <i className="bi bi-person-circle me-1 text-white"></i>Profil
+        </button>
+      </div>
 
       {!osztalySzuro && (
-        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 my-4">
+        <div className="row g-4 justify-content-center">
           {osztalyok.map((o, i) => (
-            <div className="col" key={i}>
-              <div
-                className={`card h-100 text-center ${
-                  darkMode ? "bg-secondary text-light" : "bg-light"
-                } border border-primary shadow`}
-                style={{ cursor: "pointer", transition: "transform 0.2s" }}
-                onClick={() => setOsztalySzuro(o.osztalyNev)}
-              >
+            <div
+              key={i}
+              className="col-sm-6 col-md-4 col-lg-3"
+              onClick={() => setOsztalySzuro(o.osztalyNev)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className={`card text-center shadow-sm h-100 ${isDarkMode ? "bg-secondary text-light" : "bg-white"}`}>
                 <div className="card-body">
-                  <i className="bi bi-door-closed display-4 text-primary mb-3"></i>
+                  <i className="bi bi-door-closed display-4 mb-3"></i>
                   <h5 className="card-title">{o.osztalyNev}</h5>
-                  <p className="card-text">
-                    Tanár: <strong>{o.osztalyfonokNev}</strong>
-                  </p>
-                  <p className="card-text">
-                    Terem: <strong>{o.terem}</strong>
-                  </p>
+                  <p className="card-text">Tanár: <strong>{o.osztalyfonokNev}</strong></p>
+                  <p className="card-text">Terem: <strong>{o.terem}</strong></p>
                 </div>
               </div>
             </div>
@@ -80,20 +96,14 @@ function PortasOldal() {
 
       {osztalySzuro && (
         <div className="mt-4">
-          <button
-            className="btn btn-outline-secondary mb-3"
-            onClick={() => setOsztalySzuro("")}
-          >
-            ← Vissza az osztályokhoz
+          <button className="btn btn-outline-secondary mb-3" onClick={() => setOsztalySzuro("")}>
+            <i className="bi bi-arrow-left me-1"></i>Vissza az osztályokhoz
           </button>
-          <h4 className="mb-3">{osztalySzuro} osztály tanulói:</h4>
+
+          <h4 className="mb-3">{osztalySzuro} osztály tanulói</h4>
           <div className="table-responsive">
-            <table
-              className={`table table-bordered table-hover ${
-                darkMode ? "table-dark" : "bg-white"
-              }`}
-            >
-              <thead className={darkMode ? "table-secondary" : "table-light"}>
+            <table className="table table-bordered table-hover">
+              <thead className={isDarkMode ? "table-dark" : "table-light"}>
                 <tr>
                   <th>Név</th>
                   <th>Szakkör</th>
@@ -115,10 +125,10 @@ function PortasOldal() {
                     <td>
                       {t.specHazavitel ? (
                         <span className="text-danger fw-bold">
-                          🔒 Ellenőrzés szükséges
+                          <i className="bi bi-lock me-1"></i>Ellenőrzés szükséges
                         </span>
                       ) : (
-                        "✔️"
+                        <i className="bi bi-check-circle text-success"></i>
                       )}
                     </td>
                     <td>
@@ -126,7 +136,7 @@ function PortasOldal() {
                         className="btn btn-sm btn-primary"
                         onClick={() => jelzesKuldese(t)}
                       >
-                        🔔 Jelzés
+                        <i className="bi bi-bell me-1"></i>Jelzés
                       </button>
                     </td>
                   </tr>
@@ -141,5 +151,3 @@ function PortasOldal() {
 }
 
 export default PortasOldal;
-
-

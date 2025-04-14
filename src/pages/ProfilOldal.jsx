@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getFelhasznaloById, updateFelhasznalo } from "../api/felhasznaloApi";
+import { getAktualisFelhasznalo, updateFelhasznalo } from "../api/felhasznaloApi";
 import { useDarkMode } from "../context/DarkModeContext";
 import { Button, Form, Container, Card, Row, Col, Alert } from "react-bootstrap";
+import AdminVisszaGomb from '../components/AdminVisszaGomb';
 
 function ProfilOldal() {
   const { darkMode } = useDarkMode();
@@ -10,18 +11,14 @@ function ProfilOldal() {
   const [form, setForm] = useState({ nev: "", email: "" });
   const [uzenet, setUzenet] = useState("");
 
-  const id = localStorage.getItem("userId");
-
   useEffect(() => {
-    if (id) {
-      getFelhasznaloById(id)
-        .then((adat) => {
-          setFelhasznalo(adat);
-          setForm({ nev: adat.nev, email: adat.email });
-        })
-        .catch(() => setUzenet("Nem sikerült betölteni az adatokat."));
-    }
-  }, [id]);
+    getAktualisFelhasznalo()
+      .then((adat) => {
+        setFelhasznalo(adat);
+        setForm({ nev: adat.nev, email: adat.email });
+      })
+      .catch(() => setUzenet("Nem sikerült betölteni az adatokat."));
+  }, []);
 
   const handleValtozas = (e) => {
     const { name, value } = e.target;
@@ -30,7 +27,7 @@ function ProfilOldal() {
 
   const handleMentes = async () => {
     try {
-      await updateFelhasznalo(id, form);
+      await updateFelhasznalo(felhasznalo.id, form);
       setFelhasznalo((prev) => ({ ...prev, ...form }));
       setSzerkeszt(false);
       setUzenet("Profil frissítve.");
@@ -42,12 +39,13 @@ function ProfilOldal() {
   if (!felhasznalo) return <div className="text-center mt-5">Betöltés...</div>;
 
   return (
-    <Container className="mt-5 pt-4">
+    <Container className={`profil-oldal py-4 ${darkMode ? 'dark-mode bg-dark text-light' : 'bg-light text-dark'}`}>
+      <h2 className="text-center mb-4">Profil</h2>    
+      <AdminVisszaGomb />
+
       <Row className="justify-content-center">
         <Col md={8} lg={6}>
-          <Card
-            className={`shadow-sm ${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}
-          >
+          <Card className={`shadow-sm ${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}>
             <Card.Header>
               <h4 className="text-center">Saját profil</h4>
             </Card.Header>
@@ -121,8 +119,3 @@ function ProfilOldal() {
 }
 
 export default ProfilOldal;
-
-
-
-
-

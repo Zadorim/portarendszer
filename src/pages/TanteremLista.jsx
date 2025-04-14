@@ -1,84 +1,98 @@
-import React, { useEffect, useState } from "react";
-import { getTanteremek, createTanterem, updateTanterem, deleteTanterem } from "../api/tanteremApi";
-import { Button, Table, Modal, Form, InputGroup, FormControl } from "react-bootstrap";
-import { useDarkMode } from "../context/DarkModeContext";
+import React, { useEffect, useState } from 'react';
+import { Table, Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
+import { getTantermek, createTanterem, updateTanterem, deleteTanterem } from '../api/tanteremApi';
+import { useDarkMode } from '../context/DarkModeContext';
+import AdminVisszaGomb from '../components/AdminVisszaGomb';
+import AdminBreadcrumb from '../components/AdminBreadcrumb';
 
 function TanteremLista() {
   const { darkMode } = useDarkMode();
   const [tantermek, setTantermek] = useState([]);
-  const [szuro, setSzuro] = useState("");
+  const [szuro, setSzuro] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [kivalasztott, setKivalasztott] = useState(null);
-  const [nev, setNev] = useState("");
+  const [formData, setFormData] = useState({ nev: '' });
 
   useEffect(() => {
-    frissitTantermeket();
+    betoltTantermeket();
   }, []);
 
-  const frissitTantermeket = async () => {
+  const betoltTantermeket = async () => {
     try {
-      const adatok = await getTanteremek();
+      const adatok = await getTantermek();
       setTantermek(adatok);
-    } catch (err) {
-      alert("Hiba a tantermek betöltésekor!");
+    } catch (error) {
+      alert('Hiba a tantermek betöltésekor!');
+      console.error(error);
     }
   };
 
   const kezelesUj = () => {
     setKivalasztott(null);
-    setNev("");
+    setFormData({ nev: '' });
     setShowModal(true);
   };
 
   const kezelesSzerkesztes = (terem) => {
     setKivalasztott(terem);
-    setNev(terem.nev);
+    setFormData({ nev: terem.nev });
     setShowModal(true);
   };
 
   const mentes = async () => {
     try {
       if (kivalasztott?.id) {
-        await updateTanterem(kivalasztott.id, { nev });
+        await updateTanterem(kivalasztott.id, formData);
       } else {
-        await createTanterem({ nev });
+        await createTanterem(formData);
       }
       setShowModal(false);
-      frissitTantermeket();
-    } catch (err) {
-      alert("Mentés sikertelen!");
+      betoltTantermeket();
+    } catch (error) {
+      alert('Mentés sikertelen!');
     }
   };
 
   const torles = async (id) => {
-    if (window.confirm("Biztosan törlöd ezt a tantermet?")) {
+    if (window.confirm('Biztosan törlöd ezt a tantermet?')) {
       try {
         await deleteTanterem(id);
-        frissitTantermeket();
-      } catch (err) {
-        alert("Törlés sikertelen!");
+        betoltTantermeket();
+      } catch (error) {
+        alert('Törlés sikertelen!');
       }
     }
   };
 
-  const szurtLista = tantermek.filter((t) =>
+  const szurtTantermek = tantermek.filter((t) =>
     t.nev.toLowerCase().includes(szuro.toLowerCase())
   );
 
   return (
-    <div className={`container mt-5 ${darkMode ? "text-light bg-dark" : ""}`}>
-      <h2 className="text-center mb-4">Tantermek kezelése</h2>
+    <div className={`container mt-4 p-4 rounded shadow-sm ${darkMode ? 'bg-dark text-light' : 'bg-white text-dark'}`}>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex align-items-center">
+          <AdminVisszaGomb />
+          <AdminBreadcrumb className="ms-3" />
+        </div>
+        <h2 className="fw-bold text-center mb-0" style={{ textShadow: darkMode ? '1px 1px 3px rgba(0,0,0,0.5)' : 'none' }}>
+          Tantermek kezelése
+        </h2>
+        <Button variant="success" onClick={kezelesUj}>
+          ➕ Új terem
+        </Button>
+      </div>
 
       <InputGroup className="mb-3">
         <FormControl
           placeholder="Keresés tanterem neve alapján..."
           value={szuro}
           onChange={(e) => setSzuro(e.target.value)}
+          className={darkMode ? 'bg-dark text-light border-secondary' : ''}
         />
-        <Button variant="success" onClick={kezelesUj}>➕ Új terem</Button>
       </InputGroup>
 
-      <Table striped bordered hover variant={darkMode ? "dark" : "light"}>
+      <Table bordered hover responsive className={darkMode ? 'table-dark' : 'table-light'}>
         <thead>
           <tr>
             <th>#</th>
@@ -87,39 +101,57 @@ function TanteremLista() {
           </tr>
         </thead>
         <tbody>
-          {szurtLista.map((t, i) => (
-            <tr key={t.id}>
-              <td>{i + 1}</td>
-              <td>{t.nev}</td>
+          {szurtTantermek.map((terem, index) => (
+            <tr key={terem.id}>
+              <td>{index + 1}</td>
+              <td>{terem.nev}</td>
               <td>
-                <Button variant="primary" size="sm" className="me-2" onClick={() => kezelesSzerkesztes(t)}>✏️</Button>
-                <Button variant="danger" size="sm" onClick={() => torles(t.id)}>🗑️</Button>
+                <Button
+                  size="sm"
+                  variant="info"
+                  className="me-2"
+                  onClick={() => kezelesSzerkesztes(terem)}
+                >
+                  <i className="bi bi-pencil-square" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="danger"
+                  onClick={() => torles(terem.id)}
+                >
+                  <i className="bi bi-trash" />
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
+      {/* Modal ablak */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{kivalasztott ? "Tanterem szerkesztése" : "Új tanterem"}</Modal.Title>
+        <Modal.Header closeButton className={darkMode ? 'bg-dark text-light' : ''}>
+          <Modal.Title>{kivalasztott ? 'Tanterem szerkesztése' : 'Új tanterem'}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={darkMode ? 'bg-dark text-light' : ''}>
           <Form>
             <Form.Group>
               <Form.Label>Tanterem neve</Form.Label>
               <Form.Control
                 type="text"
-                value={nev}
-                onChange={(e) => setNev(e.target.value)}
+                value={formData.nev}
+                onChange={(e) => setFormData({ nev: e.target.value })}
                 required
               />
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>Mégse</Button>
-          <Button variant="primary" onClick={mentes}>Mentés</Button>
+        <Modal.Footer className={darkMode ? 'bg-dark text-light' : ''}>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Mégse
+          </Button>
+          <Button variant="primary" onClick={mentes}>
+            Mentés
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
@@ -127,11 +159,3 @@ function TanteremLista() {
 }
 
 export default TanteremLista;
-
-
-
-
-
-
-
-
