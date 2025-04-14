@@ -43,9 +43,17 @@ function PortasOldal() {
       );
       if (!elfogad) return;
     }
-    console.log(
-      `Jelzés: ${tanulo.nev} (${tanulo.osztalyNev}) tanulóért megérkeztek.`
-    );
+
+    const jelzes = {
+      tanuloId: tanulo.id,
+      tanuloNev: tanulo.nev,
+      osztalyNev: tanulo.osztalyNev,
+      timestamp: new Date().toISOString(),
+      status: "varakozik"
+    };
+
+    localStorage.setItem("jelzes_" + tanulo.id, JSON.stringify(jelzes));
+    alert(`Jelzés elküldve: ${tanulo.nev} (${tanulo.osztalyNev})`);
   };
 
   return (

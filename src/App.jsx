@@ -20,6 +20,8 @@ import BelepesekOldal from './pages/BelepesekOldal';
 import ProfilOldal from './pages/ProfilOldal';
 import OsztalyokOldal from './pages/OsztalyokOldal';
 import TanteremLista from './pages/TanteremLista';
+import TanariTabletOldal from './pages/TanariTabletOldal';
+import TanariOldal from './pages/TanariOldal';
 
 
 
@@ -43,6 +45,9 @@ function App() {
                 <Route path="/admin/profil" element={<ProfilOldal />} />
                 <Route path="/portas" element={<PortasOldal />} />
                 <Route path="/profil" element={<ProfilOldal />} />
+                <Route path="/tanar" element={<TanariOldal />} />
+                <Route path="/tanar-tablet" element={<TanariTabletOldal />} />
+
               </Routes>
             </main>
             <Footer />
