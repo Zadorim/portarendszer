@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getTanulok } from "../api/tanuloApi";
 import { useDarkMode } from "../context/DarkModeContext"
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 

@@ -5,7 +5,7 @@ import { useDarkMode } from '../context/DarkModeContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const AdminOldal = () => {
+function AdminOldal() {
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
 
@@ -42,14 +42,14 @@ const AdminOldal = () => {
       utvonal: '/admin/profil'
     }
   ];
-
+  
   return (
     <div 
       className={`min-vh-100 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}
       data-bs-theme={darkMode ? 'dark' : 'light'}
     >
       <Container className="py-4">
-        <h2 className="text-center mb-4">Admin vezérlőpult</h2>
+        <h2 className="text-center mb-4">Admin vezérlőpult</h2>       
         
         <Row xs={1} md={2} lg={3} className="g-4">
           {menupontok.map((menu, index) => (

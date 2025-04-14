@@ -24,7 +24,7 @@ const LoginModal = ({ show, handleClose }) => {
 
       localStorage.setItem('username', usernameDecoded);
       localStorage.setItem('role', roleDecoded);
-console.log(roleDecoded);
+      console.log(roleDecoded);
       alert('Sikeres bejelentkezés!');
       handleClose(); // Modal bezárása
       navigate('/redirect'); // szerepkör alapú irányítás

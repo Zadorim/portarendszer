@@ -7,8 +7,13 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 
 const Navbar = () => {
-  console.log("Navbar renderelődik");  // 👈 Nézd meg, hányszor fut le
-  // ... többi kód
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    const storedUser = localStorage.getItem("username");
+    if (storedRole !== role) setRole(storedRole);
+    if (storedUser !== username) setUsername(storedUser);
+  }, []);
+
   const navigate = useNavigate();
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [role, setRole] = useState(localStorage.getItem("role"));
@@ -57,15 +62,16 @@ const Navbar = () => {
           </Link>
 
           <div className="d-flex align-items-center ms-auto">
-            {/* 🌙 Téma váltás ikon */}
             <button
               onClick={toggleDarkMode}
-              className={`btn btn-sm me-2 ${
-                darkMode ? "btn-warning" : "btn-dark"
-              }`}
+              className={`btn btn-sm me-2 ${darkMode ? "btn-warning" : "btn-dark"}`}
               title="Téma váltás"
             >
-              <i className={`bi ${darkMode ? "bi-brightness-high" : "bi-moon"}`}></i>
+              {darkMode ? (
+                <i className="bi bi-sun-fill"></i>
+              ) : (
+                <i className="bi bi-moon-fill"></i>
+              )}
             </button>
 
             <button

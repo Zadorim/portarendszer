@@ -68,9 +68,8 @@ const KezdoOldal = () => {
               className="btn btn-warning btn-sm fw-bold"
               style={{ border: 'none', background: 'transparent', color: '#ffc107', textDecoration: 'underline' }}
             >
-              SZIDIPORT
-            </button>
-            !
+              SZIDIPORT!
+            </button>            
           </h4>
 
           {/* Admin gyorsmenü */}

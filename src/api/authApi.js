@@ -1,29 +1,33 @@
 import axios from 'axios';
-//const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/Auth`;
-const API_BASE =  "http://localhost:5072/api/Auth";
-/**
- * Bejelentkezés
- * @param {string} felhasznalonev 
- * @param {string} jelszo 
- * @returns {Promise<{ token: string }>}
- */
+
+const API_BASE = "http://localhost:5072/api/Auth";
+
 export const login = async (username, password) => {
   const res = await axios.post(`${API_BASE}/login`, {
     felhasznalonev: username,
     jelszo: password,
   });
-  return res.data;
+
+  const data = res.data;
+
+  const role = data.beosztas?.toLowerCase(); // pl. 'igazgato' → 'admin'
+
+  return {
+    token: data.token,
+    username: data.felhasznalonev,
+    role: role === 'igazgato' ? 'admin' : role, // opcionális logika
+  };
 };
 
-/**
- * Regisztráció
- * @param {object} felhasznaloObj 
- * @returns {Promise<string>}
- */
 export const register = async (formData) => {
   const res = await axios.post(`${API_BASE}/register`, formData);
-  return res.data;
+
+  const data = res.data;
+  const role = data.beosztas?.toLowerCase();
+
+  return {
+    token: data.token,
+    username: data.felhasznalonev,
+    role: role === 'igazgato' ? 'admin' : role,
+  };
 };
-
-
-

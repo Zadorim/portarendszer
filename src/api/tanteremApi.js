@@ -2,7 +2,8 @@ import axios from 'axios';
 
 //const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/Tanterem`;
 const API_BASE =  "http://localhost:5072/api/Tanterem";
-export const getTanteremek = async () => {
+
+export const getTantermek = async () => {
   const token = localStorage.getItem('token');
   const res = await axios.get(API_BASE, {
     headers: { Authorization: `Bearer ${token}` }
@@ -79,5 +80,7 @@ export const deleteTanterem = async (id) => {
     throw err;
   }
 };
+
+
 
 
