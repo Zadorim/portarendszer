@@ -22,6 +22,8 @@ import OsztalyokOldal from './pages/OsztalyokOldal';
 import TanteremLista from './pages/TanteremLista';
 import TanariTabletOldal from './pages/TanariTabletOldal';
 import TanariOldal from './pages/TanariOldal';
+import ChangePassword from "./pages/ChangePassword";
+
 
 
 
@@ -47,7 +49,7 @@ function App() {
                 <Route path="/profil" element={<ProfilOldal />} />
                 <Route path="/tanar" element={<TanariOldal />} />
                 <Route path="/tanar-tablet" element={<TanariTabletOldal />} />
-
+                <Route path="/jelszocsere" element={<ChangePassword />} />
               </Routes>
             </main>
             <Footer />
