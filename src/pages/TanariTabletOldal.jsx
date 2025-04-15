@@ -5,7 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useSound from 'use-sound';
 import bellSound from '../assets/ringtone-you-would-be-glad-to-know.mp3';
+import AdminVisszaGomb from '../components/AdminVisszaGomb';
+import AdminBreadcrumb from '../components/AdminBreadcrumb';
 import '../style.css';
+
 
 function TanariTabletOldal() {
   const { darkMode } = useDarkMode();
@@ -38,6 +41,12 @@ function TanariTabletOldal() {
 
   return (  
     <Container className={`tablet-page my-4 py-4 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}>
+      
+      <div className="d-flex align-items-center mb-3">
+        <AdminVisszaGomb />
+        <AdminBreadcrumb className="ms-3" />
+      </div>
+  
       <Card className={`shadow-lg text-center ${darkMode ? 'bg-secondary text-white' : 'bg-white text-dark'}`}>
         <Card.Header className="fw-bold">
           <h3><i className="bi bi-tablet-landscape me-2"></i>Tanári Tablet Felület</h3>
@@ -60,6 +69,7 @@ function TanariTabletOldal() {
       </Card>
     </Container>
   );
+  
 }
 
 export default TanariTabletOldal;

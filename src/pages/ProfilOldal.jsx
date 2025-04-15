@@ -37,11 +37,11 @@ function ProfilOldal() {
     }
   };
 
-  if (!felhasznalo) return <div className="text-center mt-5">Betöltés...</div>;
+  if (!felhasznalo) return <div className=" text-center mt-5">Betöltés...</div>;
 
   return (
-    <Container className={`admin-page py-5 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}>
-      <Row className="justify-content-center">
+    <Container className={` py-5 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}>
+      <Row className="admin-page justify-content-center">
         <Col md={8} lg={5}>
           <Card className={`shadow-lg profile-card ${darkMode ? "bg-dark text-light" : "bg-white text-dark"}`}>
             <Card.Header className="text-center">
@@ -49,7 +49,7 @@ function ProfilOldal() {
             </Card.Header>
 
             <Card.Body>
-              {uzenet && <Alert variant="info" className="text-center">{uzenet}</Alert>}
+              {uzenet && <Alert variant="info" className="admin-page text-center">{uzenet}</Alert>}
 
               <Form>
                 <Form.Group className="mb-3">
