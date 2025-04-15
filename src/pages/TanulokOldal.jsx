@@ -91,8 +91,8 @@ function TanulokOldal() {
       (t.osztalyNev || "").toLowerCase().includes(szuro.toLowerCase())
   );
 
-  return (
-    <div className={`container mt-5 ${darkMode ? "text-light bg-dark" : ""}`}>
+  return (  
+    <div className={`admin-page container mt-5 ${darkMode ? "text-light bg-dark" : ""}`}>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <AdminVisszaGomb />
         <h2>Tanulók kezelése</h2>
@@ -230,7 +230,7 @@ function TanulokOldal() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </div>  
   );
 }
 

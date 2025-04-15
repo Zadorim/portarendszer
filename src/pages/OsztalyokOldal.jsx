@@ -84,7 +84,8 @@ function OsztalyokOldal() {
   );
 
   return (
-    <div className={`p-4 ${isDarkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`} style={{ minHeight: '100vh' }}>
+  <div className="admin-page"> 
+    <div className={`admin-page p-4 ${isDarkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`} style={{ minHeight: '100vh' }}>
       <AdminVisszaGomb />
       <h2 className="text-center mb-4">Osztályok kezelése</h2>
 
@@ -162,6 +163,7 @@ function OsztalyokOldal() {
         </Modal.Footer>
       </Modal>
     </div>
+  </div>
   );
 }
 

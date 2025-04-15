@@ -3,6 +3,7 @@ import { getAktualisFelhasznalo, updateFelhasznalo } from "../api/felhasznaloApi
 import { useDarkMode } from "../context/DarkModeContext";
 import { Button, Form, Container, Card, Row, Col, Alert } from "react-bootstrap";
 import AdminVisszaGomb from '../components/AdminVisszaGomb';
+import '../style.css';
 
 function ProfilOldal() {
   const { darkMode } = useDarkMode();
@@ -39,76 +40,56 @@ function ProfilOldal() {
   if (!felhasznalo) return <div className="text-center mt-5">Betöltés...</div>;
 
   return (
-    <Container className={`profil-oldal py-4 ${darkMode ? 'dark-mode bg-dark text-light' : 'bg-light text-dark'}`}>
-      <h2 className="text-center mb-4">Profil</h2>    
-      <AdminVisszaGomb />
-
+    <Container className={`admin-page py-5 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}>
       <Row className="justify-content-center">
-        <Col md={8} lg={6}>
-          <Card className={`shadow-sm ${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}>
-            <Card.Header>
-              <h4 className="text-center">Saját profil</h4>
+        <Col md={8} lg={5}>
+          <Card className={`shadow-lg profile-card ${darkMode ? "bg-dark text-light" : "bg-white text-dark"}`}>
+            <Card.Header className="text-center">
+              <h3 className="fw-bold">Profilom</h3>
             </Card.Header>
+
             <Card.Body>
-              {uzenet && <Alert variant="info">{uzenet}</Alert>}
+              {uzenet && <Alert variant="info" className="text-center">{uzenet}</Alert>}
 
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label>Felhasználónév</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={felhasznalo.felhasznalonev}
-                    disabled
-                  />
+                  <Form.Control value={felhasznalo.felhasznalonev} disabled />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label>Név</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="nev"
-                    value={form.nev}
-                    onChange={handleValtozas}
-                    disabled={!szerkeszt}
-                  />
+                  <Form.Control name="nev" value={form.nev} onChange={handleValtozas} disabled={!szerkeszt} />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleValtozas}
-                    disabled={!szerkeszt}
-                  />
+                  <Form.Control type="email" name="email" value={form.email} onChange={handleValtozas} disabled={!szerkeszt} />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-4">
                   <Form.Label>Szerepkör</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={felhasznalo.beosztas}
-                    disabled
-                  />
+                  <Form.Control value={felhasznalo.beosztas} disabled />
                 </Form.Group>
 
-                {szerkeszt ? (
-                  <div className="d-flex justify-content-between">
-                    <Button variant="secondary" onClick={() => setSzerkeszt(false)}>
-                      Mégse
-                    </Button>
-                    <Button variant="primary" onClick={handleMentes}>
-                      Mentés
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="text-end">
-                    <Button variant="warning" onClick={() => setSzerkeszt(true)}>
+                <div className="d-flex justify-content-between">
+                  <AdminVisszaGomb />
+
+                  {szerkeszt ? (
+                    <div>
+                      <Button variant="secondary" onClick={() => setSzerkeszt(false)} className="me-2">
+                        Mégse
+                      </Button>
+                      <Button variant="success" onClick={handleMentes}>
+                        Mentés
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button variant="primary" onClick={() => setSzerkeszt(true)}>
                       Szerkesztés
                     </Button>
-                  </div>
-                )}
+                  )}
+                </div>
               </Form>
             </Card.Body>
           </Card>

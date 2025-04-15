@@ -58,16 +58,16 @@ function PortasOldal() {
 
   return (
     <div
-      className={`container-fluid py-4 portas-hatter ${isDarkMode ? "dark-mode" : ""}`}
-      style={{
-        backgroundImage: `url(${process.env.PUBLIC_URL + '/iskola_hatter.jpg'})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed',
-        backgroundPosition: 'center',
-        filter: isDarkMode ? 'grayscale(100%) brightness(0.7)' : 'none',
-        minHeight: '100vh'
-      }}
+      className={`admin-page container-fluid py-4 portas-hatter ${isDarkMode ? "dark-mode" : ""}`}
+      //style={{
+        //backgroundImage: `url(${process.env.PUBLIC_URL + '/iskola_hatter.jpg'})`,
+        //backgroundSize: 'cover',
+        //backgroundRepeat: 'no-repeat',
+        //backgroundAttachment: 'fixed',
+        //backgroundPosition: 'center',
+        //filter: isDarkMode ? 'grayscale(100%) brightness(0.7)' : 'none',
+        //minHeight: '100vh'
+      //}}
     >
       <h2 className="text-center fw-bold mb-4">Portás felület</h2>
 

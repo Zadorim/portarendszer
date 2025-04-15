@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Modal, Form, InputGroup, FormControl, Card } from 'react-bootstrap';
 import { getTantermek, createTanterem, updateTanterem, deleteTanterem } from '../api/tanteremApi';
 import { useDarkMode } from '../context/DarkModeContext';
 import AdminVisszaGomb from '../components/AdminVisszaGomb';
 import AdminBreadcrumb from '../components/AdminBreadcrumb';
+import '../style.css';
 
 function TanteremLista() {
   const { darkMode } = useDarkMode();
@@ -69,70 +70,47 @@ function TanteremLista() {
   );
 
   return (
-    <div className={`container mt-4 p-4 rounded shadow-sm ${darkMode ? 'bg-dark text-light' : 'bg-white text-dark'}`}>
+    <div className="admin-page container my-4 p-4 rounded shadow-sm">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex align-items-center">
           <AdminVisszaGomb />
           <AdminBreadcrumb className="ms-3" />
         </div>
-        <h2 className="fw-bold text-center mb-0" style={{ textShadow: darkMode ? '1px 1px 3px rgba(0,0,0,0.5)' : 'none' }}>
-          Tantermek kezelése
-        </h2>
-        <Button variant="success" onClick={kezelesUj}>
-          ➕ Új terem
-        </Button>
+        <h2 className="fw-bold text-center">Tantermek kezelése</h2>
+        <Button variant="success" onClick={kezelesUj}>➕ Új terem</Button>
       </div>
 
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-4">
         <FormControl
           placeholder="Keresés tanterem neve alapján..."
           value={szuro}
           onChange={(e) => setSzuro(e.target.value)}
-          className={darkMode ? 'bg-dark text-light border-secondary' : ''}
         />
       </InputGroup>
 
-      <Table bordered hover responsive className={darkMode ? 'table-dark' : 'table-light'}>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Név</th>
-            <th>Műveletek</th>
-          </tr>
-        </thead>
-        <tbody>
-          {szurtTantermek.map((terem, index) => (
-            <tr key={terem.id}>
-              <td>{index + 1}</td>
-              <td>{terem.nev}</td>
-              <td>
-                <Button
-                  size="sm"
-                  variant="info"
-                  className="me-2"
-                  onClick={() => kezelesSzerkesztes(terem)}
-                >
+      <div className="tanterem-grid">
+        {szurtTantermek.map((terem) => (
+          <Card key={terem.id} className={`tanterem-card ${darkMode ? 'dark-card' : ''}`}>
+            <Card.Body>
+              <Card.Title>{terem.nev}</Card.Title>
+              <div className="d-flex justify-content-end gap-2">
+                <Button size="sm" variant="info" onClick={() => kezelesSzerkesztes(terem)}>
                   <i className="bi bi-pencil-square" />
                 </Button>
-                <Button
-                  size="sm"
-                  variant="danger"
-                  onClick={() => torles(terem.id)}
-                >
+                <Button size="sm" variant="danger" onClick={() => torles(terem.id)}>
                   <i className="bi bi-trash" />
                 </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+              </div>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
 
-      {/* Modal ablak */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton className={darkMode ? 'bg-dark text-light' : ''}>
+        <Modal.Header closeButton>
           <Modal.Title>{kivalasztott ? 'Tanterem szerkesztése' : 'Új tanterem'}</Modal.Title>
         </Modal.Header>
-        <Modal.Body className={darkMode ? 'bg-dark text-light' : ''}>
+        <Modal.Body>
           <Form>
             <Form.Group>
               <Form.Label>Tanterem neve</Form.Label>
@@ -145,13 +123,9 @@ function TanteremLista() {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer className={darkMode ? 'bg-dark text-light' : ''}>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Mégse
-          </Button>
-          <Button variant="primary" onClick={mentes}>
-            Mentés
-          </Button>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Mégse</Button>
+          <Button variant="primary" onClick={mentes}>Mentés</Button>
         </Modal.Footer>
       </Modal>
     </div>

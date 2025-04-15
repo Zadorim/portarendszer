@@ -63,8 +63,9 @@ function TanariTabletOldal() {
   };
 
   return (
+  <div className="admin-page"> 
     <div
-      className={`container py-5 ${isDarkMode ? "bg-dark text-light" : "bg-light text-dark"}`}
+      className={`admin-page container py-5 ${isDarkMode ? "bg-dark text-light" : "bg-light text-dark"}`}
       style={{ minHeight: "100vh" }}
     >
       <h2 className="text-center mb-4">Tanári értesítések</h2>
@@ -95,6 +96,7 @@ function TanariTabletOldal() {
         </div>
       )}
     </div>
+  </div>
   );
 }
 

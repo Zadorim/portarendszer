@@ -1,10 +1,12 @@
-/* -- Alap változók és sötét mód kontraszt -- */
+/* ---------------------------------
+   ALAP VÁLTOZÓK ÉS SÖTÉT MÓD KONTRASZT
+----------------------------------- */
 :root {
   --card-bg: #fff;
   --border-color: #ccc;
   --header-bg: #f8f9fa;
   --icon-color: #000;
-  --container-bg: #ffffff;
+  --container-bg: #fff;
 }
 
 body.dark-mode {
@@ -18,47 +20,72 @@ body.dark-mode {
   color: #f1f1f1 !important;
 }
 
-/* -------------------------------------------------- */
-/* Navbar */
+/* ---------------------------------
+   GLOBÁLIS ALAPÉRTELMEZETT (VILÁGOS) HÁTTÉR
+----------------------------------- */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffdab9; /* PeachPuff */
+  transition: background-color 0.3s ease-in-out;
+  font-family: sans-serif; /* példa */
+}
+.admin-page {
+  min-height: 100vh;
+  background-color: #ffdab9; /* PeachPuff */
+  /* semmi background override */
+}
+
+/* Ha sötét mód, felülírjuk a body háttért */
+.dark-mode body {
+  background-color: #121212 !important;
+  color: #f1f1f1 !important;
+}
+
+/* ---------------------------------
+   KEZDŐOLDAL – KIVÉTEL
+   (Saját háttér/kép) 
+----------------------------------- */
+.kezdo-oldal {
+  /* A kezdőoldal külön háttér / kép / szín.
+     Ha fehéret akarsz: 
+  background-color: #fff !important;
+  */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+
+  /* Ha egy képet akarsz: 
+  background-image: url("/kepek/valami.jpg"); 
+  */
+}
+
+/* ---------------------------------
+   NAVBAR (egyszerűsített)
+----------------------------------- */
 .navbar {
   padding: 0.8rem 1rem;
   z-index: 1030;
+  background-color: var(--header-bg);
+  color: var(--icon-color);
 }
 .navbar-brand {
   font-weight: 600;
 }
 .nav-link {
   padding: 0.5rem 1rem;
-  font-weight: 500;
   color: inherit;
+  text-decoration: none;
 }
 .dark-mode .navbar {
-  background-color: #111 !important;
-  color: white;
-}
-.dark-mode .navbar .nav-link {
-  color: white;
-}
-.dark-mode .navbar .btn-outline-secondary,
-.dark-mode .navbar .btn-outline-info {
-  border-color: white;
-  color: white;
-}
-.dark-mode .navbar .btn-outline-secondary:hover,
-.dark-mode .navbar .btn-outline-info:hover {
-  background-color: white;
-  color: black;
-}
-.dark-mode .navbar-brand {
-  color: white !important;
-}
-.dark-mode .navbar {
-  background-color: #000 !important; /* erősebb sötét a navbarhoz */
-  color: white !important;
+  background-color: #000 !important;
+  color: #fff !important;
 }
 
-/* -------------------------------------------------- */
-/* SZIDIPORT gomb stílus */
+/* ---------------------------------
+   GOMBOK 
+----------------------------------- */
 .szidiport-btn {
   font-size: 1.2rem;
   font-weight: 600;
@@ -83,224 +110,79 @@ body.dark-mode {
   background-color: #2ca6cf;
 }
 
-/* -------------------------------------------------- */
-/* Porta felület */
-.portas-hatter {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  position: relative;
+/* ---------------------------------
+   KÁRTYÁK, ALAP ELEMEK
+----------------------------------- */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: background-color 0.3s;
+  margin-bottom: 1rem;
 }
-.portas-hatter::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.3); /* alap overlay */
-  backdrop-filter: blur(2px);
-  z-index: -1;
-}
-.dark-mode .portas-hatter::before {
-  background: rgba(0,0,0,0.5); /* erősebb overlay sötét módban */
-}
-
-/* Lágy áttűnés módváltáskor */
-body, .card, .portas-hatter {
-  transition: all 0.4s ease-in-out;
-}
-
-/* Portás header */
-.portas-header h2 {
-  color: white;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-}
-
-/* Gombok a portás headerben */
-.dark-mode .portas-header button,
-.dark-mode .portas-header i {
-  color: white !important;
-}
-.dark-mode .portas-header .btn-outline-primary,
-.dark-mode .portas-header .btn-outline-secondary {
-  border-color: white;
-  color: white;
-}
-.dark-mode .portas-header .btn-outline-primary:hover,
-.dark-mode .portas-header .btn-outline-secondary:hover {
-  background-color: white;
-  color: black;
-}
-.dark-mode .portas-header button,
-.dark-mode .portas-header .btn {
-  color: white !important;
-  border-color: white !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  backdrop-filter: blur(2px);
-}
-.dark-mode .portas-header .btn:hover {
-  background-color: white !important;
-  color: black !important;
-}
-
-/* -------------------------------------------------- */
-/* Sötét mód a kártyákhoz */
 .dark-mode .card {
   background-color: #2c2c2c !important;
   color: #f1f1f1 !important;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-/* Portás page container */
+/* ---------------------------------
+   PORTÁS OLDAL
+----------------------------------- */
 .portas-page {
   padding: 2rem;
-  min-height: calc(100vh - 120px);
+  min-height: 100vh;
   text-align: center;
 }
+/* Ha kell overlay, teheted ide:
+.portas-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: -1;
+}
+.dark-mode .portas-page::before {
+  background: rgba(0,0,0,0.5);
+}
+*/
 .portas-header {
   font-size: 2rem;
   margin-bottom: 1.5rem;
 }
-
-/* Osztálykártyák grid */
-.osztaly-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-.osztaly-card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-}
-.osztaly-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-.dark-mode .osztaly-card {
-  background-color: #2b2b2b;
-  color: #f0f0f0;
-}
-.card-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: var(--icon-color);
-}
-.dark-mode .card-icon {
-  color: #f0f0f0;
+.portas-header h2 {
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* -------------------------------------------------- */
-/* Alap sötét mód fejlécek */
-.dark-mode h1, 
-.dark-mode h2, 
-.dark-mode h3, 
-.dark-mode h4 {
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Kezdőoldal */
-.kezdo-oldal {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.content-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+/* ---------------------------------
+   ADMIN OLDAL
+----------------------------------- */
+.admin-page {
+  background-color: #ffdab9; /* PeachPuff */
   padding: 2rem;
+  min-height: 100vh;
 }
-.welcome-box {
-  background: rgba(0, 0, 0, 0.75);
-  padding: 3rem;
-  border-radius: 15px;
-  max-width: 800px;
-  text-align: center;
-  color: white;
-  width: 100%;
-}
-.dark-mode .welcome-box {
-  background: rgba(0, 0, 0, 0.85);
-}
-.welcome-title {
-  font-size: 2.2rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.3;
-}
-.welcome-text {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  line-height: 1.6;
-}
-
-/* -------------------------------------------------- */
-/* Admin kártyák */
-.admin-quick-menu {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 2rem;
-}
-.quick-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  color: white;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.quick-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Admin-oldal container */
 .admin-header {
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
   border-bottom: 1px solid #dee2e6;
 }
 .admin-header h2 {
-  margin-bottom: 0;
   margin-left: 1rem;
 }
-.admin-page {
-  background-color: var(--card-bg);
-  color: inherit;
-  border-radius: 10px;
-  padding: 2rem;
-  margin: 1rem auto;
-}
-.dark-mode .admin-page {
-  background-color: #2b2b2b;
-}
 
-/* Táblázatok */
+/* ---------------------------------
+   TÁBLÁZATOK, GOMBOK
+----------------------------------- */
 .table-hover tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.03);
 }
 .table thead th {
   border-bottom-width: 1px;
   font-weight: 500;
-}
-.card {
-  border: none;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 .btn-outline-danger,
 .btn-outline-info {
@@ -318,7 +200,9 @@ body, .card, .portas-hatter {
   border-color: #444;
 }
 
-/* Footer */
+/* ---------------------------------
+   FOOTER
+----------------------------------- */
 .footer {
   background: var(--card-bg);
   color: inherit;
@@ -330,7 +214,9 @@ body, .card, .portas-hatter {
   color: white;
 }
 
-/* Visszalépő gombok stílusa */
+/* ---------------------------------
+   VISSZALÉPŐ GOMB
+----------------------------------- */
 .back-button {
   margin: 1rem 0;
   display: inline-flex;
@@ -354,25 +240,63 @@ body, .card, .portas-hatter {
   background: #555;
 }
 
-/* Reszponzív */
+/* ---------------------------------
+   KEZDŐOLDAL TARTALOM
+----------------------------------- */
+.kezdo-oldal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; 
+  background-image: "url('/iskola_hatter.jpg')";
+  background-size: cover;
+  background-position: center; 
+}
+
+.welcome-box {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 3rem;
+  border-radius: 15px;
+  max-width: 800px;
+  text-align: center;
+  color: white;
+  width: 100%;
+}
+
+.dark-mode .welcome-box {
+  background: rgba(0, 0, 0, 0.85);
+}
+.welcome-title {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+.welcome-text {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* ---------------------------------
+   RESZPONZÍV
+----------------------------------- */
 @media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
   .welcome-box {
     padding: 2rem 1.5rem;
   }
   .welcome-title {
     font-size: 1.8rem;
   }
-  .portas-header {
-    text-align: center;
-  }
 }
 
-/* Animációk, effektek */
+/* ---------------------------------
+   ANIMÁCIÓK, EFFEKTEK
+----------------------------------- */
 .transition-all {
   transition: all 0.3s ease;
-}
-.bg-gray-800 {
-  background-color: #2d3748;
 }
 .hover-scale {
   transition: transform 0.2s;
@@ -381,7 +305,9 @@ body, .card, .portas-hatter {
   transform: scale(1.02);
 }
 
-/* Dark mode színek (React Router Future Flags?) */
+/* ---------------------------------
+   TOVÁBBI DARK MODE KIEGÉSZÍTÉSEK
+----------------------------------- */
 [data-bs-theme="dark"] {
   --bs-body-bg: #1a202c;
   --bs-body-color: #e2e8f0;
@@ -389,13 +315,15 @@ body, .card, .portas-hatter {
   --bs-card-color: #e2e8f0;
   --bs-border-color: #4a5568;
 }
+
+/* Ha valahol card-hover-effect szerepel */
 .card-hover-effect:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   transform: translateY(-2px);
 }
 
-/* További dark root */
+/* Ha body.dark is használsz */
 body.dark {
   background-color: #1a202c;
   color: #e2e8f0;
@@ -407,48 +335,52 @@ body.dark {
 .dark .text-muted {
   color: #a0aec0 !important;
 }
-.dark-theme {
-  background-color: #1a202c;
-  color: #e2e8f0;
-}
-.light-theme {
-  background-color: #f8f9fa;
-}
-.dark-card {
-  background-color: #2d3748;
-  border-color: #4a5568;
-}
-.dark-card .card-title {
-  color: #e2e8f0 !important;
-}
-.text-light-soft {
-  color: #a0aec0 !important;
+.tanterem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
-/* Tablet nézet optimalizálása */
-.tablet-view {
-  min-height: 100vh;
-  background-color: #f4f4f4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  font-size: 1.3rem;
+.tanterem-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
-.tablet-view h2 {
-  font-size: 2rem;
+
+.tanterem-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.dark-card {
+  background-color: #333 !important;
+  color: #f8f9fa !important;
+}
+.profile-card {
+  transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.dark-mode .profile-card {
+  background-color: #2c2f36 !important;
+}
+.tablet-page {
+  max-width: 700px;
+  margin: auto;
+}
+
+.tablet-alert {
+  font-size: 1.2rem;
+}
+
+.tablet-alert h2 {
+  font-size: 1.5rem;
   margin-bottom: 1rem;
 }
-.tablet-alert {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  border-radius: 12px;
-  background-color: #fff3cd;
-  border: 1px solid #ffeeba;
-}
-.dark-mode .tablet-alert {
-  background-color: #3e3e2f;
-  border-color: #c3b900;
-  color: #fff;
+.tablet-alert p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
 }

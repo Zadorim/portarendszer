@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDarkMode } from "../context/DarkModeContext";
+import { Container, Card, Button, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useSound from 'use-sound';
-import bellSound from '../assets/ringtone-you-would-be-glad-to-know.mp3'; // Hang fájl elérési útja
+import bellSound from '../assets/ringtone-you-would-be-glad-to-know.mp3';
+import '../style.css';
 
 function TanariTabletOldal() {
-  const { isDarkMode } = useDarkMode();
+  const { darkMode } = useDarkMode();
   const [ertesites, setErtesites] = useState(null);
   const [play] = useSound(bellSound);
 
@@ -22,8 +24,8 @@ function TanariTabletOldal() {
       }
     };
 
-    checkErtesites(); // induláskor
-    const interval = setInterval(checkErtesites, 3000); // 3 másodpercenként ellenőrzés
+    checkErtesites();
+    const interval = setInterval(checkErtesites, 3000);
 
     return () => clearInterval(interval);
   }, [play]);
@@ -34,25 +36,29 @@ function TanariTabletOldal() {
     alert("Elfogadva.");
   };
 
-  return (
-    <div className={`tablet-view ${isDarkMode ? 'dark-mode' : ''}`}>
-      <div className="text-center w-100">
-        <h2>Tanári tablet felület</h2>
-        {ertesites ? (
-          <div className="tablet-alert p-4 shadow">
-            <p>
-              <i className="bi bi-bell-fill text-warning me-2"></i>
+  return (  
+    <Container className={`tablet-page my-4 py-4 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}>
+      <Card className={`shadow-lg text-center ${darkMode ? 'bg-secondary text-white' : 'bg-white text-dark'}`}>
+        <Card.Header className="fw-bold">
+          <h3><i className="bi bi-tablet-landscape me-2"></i>Tanári Tablet Felület</h3>
+        </Card.Header>
+        <Card.Body>
+          {ertesites ? (
+            <Alert variant="warning" className="tablet-alert">
+              <i className="bi bi-bell-fill me-2"></i>
               Értesítés: <strong>{ertesites.nev}</strong> tanulóért jöttek!
-            </p>
-            <button className="btn btn-success mt-3" onClick={elfogadas}>
-              Elfogadom <i className="bi bi-check-circle ms-1"></i>
-            </button>
-          </div>
-        ) : (
-          <p className="text-muted">Nincs új értesítés.</p>
-        )}
-      </div>
-    </div>
+              <div className="mt-3">
+                <Button variant="success" onClick={elfogadas}>
+                  Elfogadom <i className="bi bi-check-circle ms-1"></i>
+                </Button>
+              </div>
+            </Alert>
+          ) : (
+            <p className="text-muted">Nincs új értesítés.</p>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 

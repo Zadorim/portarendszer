@@ -25,10 +25,10 @@ const BelepesekOldal = () => {
     });
   };
 
-  return (
-    <div className={`belepesek-oldal container mt-4 ${darkMode ? 'dark-mode' : ''}`}>
+  return (  
+    <div className={`admin-page belepesek-oldal container mt-4 ${darkMode ? 'dark-mode' : ''}`}>
       <AdminVisszaGomb />
-      <h2 className="mb-4">Belépési napló</h2>
+      <h2 className="text-center mb-4">Belépési napló</h2>
 
       <div className="table-responsive">
         <table className={`table table-bordered ${darkMode ? 'table-dark' : 'table-light'}`}>
@@ -54,7 +54,7 @@ const BelepesekOldal = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div>  
   );
 };
 
