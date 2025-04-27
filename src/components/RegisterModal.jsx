@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';;
+import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import { register } from '../api/authApi';
-
 
 const RegisterModal = ({ show, handleClose }) => {
   const [felhasznalonev, setFelhasznalonev] = useState('');
@@ -10,22 +9,31 @@ const RegisterModal = ({ show, handleClose }) => {
   const [nev, setNev] = useState('');
   const [email, setEmail] = useState('');
   const [beosztas, setBeosztas] = useState('');
+  const [hibaUzenet, setHibaUzenet] = useState('');
+  const [sikeres, setSikeres] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setHibaUzenet('');
+    setSikeres(false);
 
     if (jelszo !== megerosites) {
-      alert("A jelszavak nem egyeznek!");
+      setHibaUzenet('A jelszavak nem egyeznek!');
       return;
     }
 
     try {
+      setIsLoading(true);
       await register({ felhasznalonev, jelszo, nev, email, beosztas });
-      alert("Sikeres regisztráció!");
-      handleClose();
-      window.location.reload(); // Frissít a navbar-hoz
+      setSikeres(true);
+      setTimeout(() => {
+        handleClose(); // Bezárás siker után kis várakozással
+      }, 1500);
     } catch (err) {
-      alert("Hiba a regisztráció során: " + (err.response?.data || err.message));
+      setHibaUzenet('Hiba a regisztráció során: ' + (err.response?.data || err.message));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -35,6 +43,9 @@ const RegisterModal = ({ show, handleClose }) => {
         <Modal.Title>Regisztráció</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {hibaUzenet && <Alert variant="danger">{hibaUzenet}</Alert>}
+        {sikeres && <Alert variant="success">Sikeres regisztráció!</Alert>}
+
         <Form onSubmit={handleRegister}>
           <Form.Group className="mb-3">
             <Form.Label>Felhasználónév</Form.Label>
@@ -43,6 +54,7 @@ const RegisterModal = ({ show, handleClose }) => {
               value={felhasznalonev}
               onChange={(e) => setFelhasznalonev(e.target.value)}
               required
+              disabled={isLoading}
             />
           </Form.Group>
 
@@ -53,6 +65,7 @@ const RegisterModal = ({ show, handleClose }) => {
               value={nev}
               onChange={(e) => setNev(e.target.value)}
               required
+              disabled={isLoading}
             />
           </Form.Group>
 
@@ -63,12 +76,18 @@ const RegisterModal = ({ show, handleClose }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isLoading}
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Beosztás</Form.Label>
-            <Form.Select value={beosztas} onChange={(e) => setBeosztas(e.target.value)} required>
+            <Form.Select 
+              value={beosztas} 
+              onChange={(e) => setBeosztas(e.target.value)}
+              required
+              disabled={isLoading}
+            >
               <option value="">-- válassz beosztást --</option>
               <option value="admin">Admin</option>
               <option value="portas">Portás</option>
@@ -83,24 +102,50 @@ const RegisterModal = ({ show, handleClose }) => {
               value={jelszo}
               onChange={(e) => setJelszo(e.target.value)}
               required
+              disabled={isLoading}
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-4">
             <Form.Label>Jelszó megerősítése</Form.Label>
             <Form.Control
               type="password"
               value={megerosites}
               onChange={(e) => setMegerosites(e.target.value)}
               required
+              disabled={isLoading}
             />
           </Form.Group>
+
           <div className="d-flex justify-content-end">
-            <Button variant="secondary" className="me-2" onClick={handleClose}>
+            <Button 
+              variant="secondary" 
+              className="me-2" 
+              onClick={handleClose}
+              disabled={isLoading}
+            >
               Mégse
             </Button>
-            <Button variant="info" type="submit">
-              Regisztráció
+            <Button 
+              variant="info" 
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Spinner 
+                    as="span" 
+                    animation="border" 
+                    size="sm" 
+                    role="status" 
+                    aria-hidden="true" 
+                    className="me-2"
+                  />
+                  Regisztráció...
+                </>
+              ) : (
+                'Regisztráció'
+              )}
             </Button>
           </div>
         </Form>
@@ -110,4 +155,3 @@ const RegisterModal = ({ show, handleClose }) => {
 };
 
 export default RegisterModal;
-

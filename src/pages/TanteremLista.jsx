@@ -1,133 +1,102 @@
+// TanteremLista.jsx
+
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, Form, InputGroup, FormControl, Card } from 'react-bootstrap';
-import { getTantermek, createTanterem, updateTanterem, deleteTanterem } from '../api/tanteremApi';
+import { getTantermek, deleteTanterem } from '../api/tanteremApi';
+import { Button, Form, Container, Card } from 'react-bootstrap';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useNavigate } from 'react-router-dom';
 import AdminVisszaGomb from '../components/AdminVisszaGomb';
 import AdminBreadcrumb from '../components/AdminBreadcrumb';
 import '../style.css';
 
 function TanteremLista() {
-  const { darkMode } = useDarkMode();
   const [tantermek, setTantermek] = useState([]);
-  const [szuro, setSzuro] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [kivalasztott, setKivalasztott] = useState(null);
-  const [formData, setFormData] = useState({ nev: '' });
+  const [kereses, setKereses] = useState('');
+  const { darkMode } = useDarkMode();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    betoltTantermeket();
+    betoltTantermek();
   }, []);
 
-  const betoltTantermeket = async () => {
+  const betoltTantermek = async () => {
     try {
       const adatok = await getTantermek();
       setTantermek(adatok);
     } catch (error) {
-      alert('Hiba a tantermek betöltésekor!');
-      console.error(error);
+      console.error('Hiba a tantermek betöltésekor:', error);
     }
   };
 
-  const kezelesUj = () => {
-    setKivalasztott(null);
-    setFormData({ nev: '' });
-    setShowModal(true);
-  };
-
-  const kezelesSzerkesztes = (terem) => {
-    setKivalasztott(terem);
-    setFormData({ nev: terem.nev });
-    setShowModal(true);
-  };
-
-  const mentes = async () => {
-    try {
-      if (kivalasztott?.id) {
-        await updateTanterem(kivalasztott.id, formData);
-      } else {
-        await createTanterem(formData);
-      }
-      setShowModal(false);
-      betoltTantermeket();
-    } catch (error) {
-      alert('Mentés sikertelen!');
+  const kezelesTorles = async (id) => {
+    if (window.confirm('Biztosan törölni szeretnéd ezt a tantermet?')) {
+      await deleteTanterem(id);
+      betoltTantermek();
     }
   };
 
-  const torles = async (id) => {
-    if (window.confirm('Biztosan törlöd ezt a tantermet?')) {
-      try {
-        await deleteTanterem(id);
-        betoltTantermeket();
-      } catch (error) {
-        alert('Törlés sikertelen!');
-      }
-    }
-  };
-
-  const szurtTantermek = tantermek.filter((t) =>
-    t.nev.toLowerCase().includes(szuro.toLowerCase())
+  const szurtTantermek = tantermek.filter((terem) =>
+    terem.nev.toLowerCase().includes(kereses.toLowerCase())
   );
 
   return (
-    <div className="admin-page container my-4 p-4 rounded shadow-sm">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div className="d-flex align-items-center">
-          <AdminVisszaGomb />
-          <AdminBreadcrumb className="ms-3" />
-        </div>
-        <h2 className="fw-bold text-center">Tantermek kezelése</h2>
-        <Button variant="success" onClick={kezelesUj}>➕ Új terem</Button>
-      </div>
+    <div
+      className="py-4"
+      style={{
+        minHeight: '100vh',
+        backgroundColor: darkMode ? '#121212' : 'peachpuff',
+      }}
+    >
+      <Container>
+        <AdminVisszaGomb />
+        <AdminBreadcrumb current="tanterem" />
 
-      <InputGroup className="mb-4">
-        <FormControl
+        <h2 className={`text-center mb-4 ${darkMode ? 'text-light' : 'text-dark'}`}>
+          Tantermek kezelése
+        </h2>
+
+        <Form.Control
+          type="text"
           placeholder="Keresés tanterem neve alapján..."
-          value={szuro}
-          onChange={(e) => setSzuro(e.target.value)}
+          value={kereses}
+          onChange={(e) => setKereses(e.target.value)}
+          className="mb-4"
+          style={{
+            backgroundColor: darkMode ? '#333' : '#fff',
+            color: darkMode ? '#fff' : '#000',
+            borderColor: darkMode ? '#555' : '#ccc',
+          }}
         />
-      </InputGroup>
 
-      <div className="tanterem-grid">
         {szurtTantermek.map((terem) => (
-          <Card key={terem.id} className={`tanterem-card ${darkMode ? 'dark-card' : ''}`}>
-            <Card.Body>
-              <Card.Title>{terem.nev}</Card.Title>
-              <div className="d-flex justify-content-end gap-2">
-                <Button size="sm" variant="info" onClick={() => kezelesSzerkesztes(terem)}>
-                  <i className="bi bi-pencil-square" />
+          <Card
+            key={terem.id}
+            className={`mb-3 shadow-sm ${darkMode ? 'bg-secondary text-light' : 'bg-white text-dark'}`}
+            style={{ borderRadius: '15px' }}
+          >
+            <Card.Body className="d-flex justify-content-between align-items-center">
+              <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+                {terem.nev}
+              </div>
+              <div>
+                <Button
+                  variant="info"
+                  className="me-2"
+                  onClick={() => navigate(`/admin/tanterem/szerkesztes/${terem.id}`)}
+                >
+                  <i className="bi bi-pencil"></i>
                 </Button>
-                <Button size="sm" variant="danger" onClick={() => torles(terem.id)}>
-                  <i className="bi bi-trash" />
+                <Button
+                  variant="danger"
+                  onClick={() => kezelesTorles(terem.id)}
+                >
+                  <i className="bi bi-trash"></i>
                 </Button>
               </div>
             </Card.Body>
           </Card>
         ))}
-      </div>
-
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{kivalasztott ? 'Tanterem szerkesztése' : 'Új tanterem'}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group>
-              <Form.Label>Tanterem neve</Form.Label>
-              <Form.Control
-                type="text"
-                value={formData.nev}
-                onChange={(e) => setFormData({ nev: e.target.value })}
-                required
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>Mégse</Button>
-          <Button variant="primary" onClick={mentes}>Mentés</Button>
-        </Modal.Footer>
-      </Modal>
+      </Container>
     </div>
   );
 }

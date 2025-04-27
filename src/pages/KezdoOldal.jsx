@@ -14,10 +14,17 @@ const KezdoOldal = () => {
   const role = localStorage.getItem('role');
 
   const handleMouseMove = () => {
-    setOpacity(0.8);
+    setOpacity(0.9);
     if (timeoutId) clearTimeout(timeoutId);
-    const id = setTimeout(() => setOpacity(1), 1500);
+    const id = setTimeout(() => setOpacity(1), 1000);
     setTimeoutId(id);
+  };
+
+  const handlePortasClick = () => {
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(100); // 100 ms vibráció mobilon
+    }
+    navigate('/portas');
   };
 
   useEffect(() => {
@@ -51,11 +58,13 @@ const KezdoOldal = () => {
               delaySpeed={2000}
             />
           </h1>
+
           <p className="welcome-text">
             Ez egy egyedülálló hívó és jelzőrendszer, ami megkönnyíti az itt dolgozók, a tanulók és a szülők mindennapját.
             <br />
             Bátran kérj segítséget!
           </p>
+
           <h4 className="greeting">
             Legyen szép napod!
             <br />
@@ -63,16 +72,13 @@ const KezdoOldal = () => {
           </h4>
 
           <div className="action-buttons">
-            <button
-              className="szidiport-btn"
-              onClick={() => navigate('/portas')}
-            >
+            <button className="szidiport-btn" onClick={handlePortasClick}>
               SZIDIPORT
             </button>
           </div>
 
           {role === 'admin' && (
-            <div className="admin-quick-menu">
+            <div className="admin-quick-menu mt-4">
               <button className="quick-btn" onClick={() => navigate('/admin/tanulok')}>
                 <i className="bi bi-people-fill"></i> Tanulók
               </button>

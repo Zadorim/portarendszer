@@ -1,66 +1,74 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import LoginModal from "./LoginModal";
-import RegisterModal from "./RegisterModal";
-import { useDarkMode } from "../context/DarkModeContext";
-import { AuthContext } from "../context/AuthContext";
-import "bootstrap-icons/font/bootstrap-icons.css";
+// Navbar.jsx
+
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { useDarkMode } from '../context/DarkModeContext';
+import { Button } from 'react-bootstrap';
+import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal'; // <-- Ez is kell!
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const { isAuthenticated, username, logout } = useContext(AuthContext);
   const { darkMode, toggleDarkMode } = useDarkMode();
-  const { role, username, logout } = useContext(AuthContext);
-
-  const [showLogin, setShowLogin] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate('/');
   };
 
   return (
-    <nav className={`navbar navbar-expand-lg ${darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"}`}>
-      <div className="container-fluid">
-        <Link className="navbar-brand fw-bold" to="/">
-        <i className="bi bi-house-door-fill me-2"></i>
-          PortaRendszer
-        </Link>
+    <>
+      <nav className="navbar d-flex justify-content-between align-items-center px-4 py-2">
+        <div className="d-flex align-items-center gap-3">
+          <Link to="/" className="navbar-brand">
+            <i className="bi bi-house-door"></i> PortaRendszer
+          </Link>
+        </div>
 
-        <div className="d-flex align-items-center">
-          <button onClick={toggleDarkMode} className="btn btn-outline-secondary me-2" title="Sötét/Világos mód">
-            <i className={`bi ${darkMode ? "bi-sun-fill" : "bi-moon-fill"}`}></i>
-          </button>
+        <div className="d-flex align-items-center gap-3">
+          {/* Dark Mode gomb */}
+          <Button
+            variant={darkMode ? 'dark' : 'light'}
+            onClick={toggleDarkMode}
+            className="rounded-circle p-2"
+          >
+            <i className={`bi ${darkMode ? 'bi-moon' : 'bi-brightness-high'}`}></i>
+          </Button>
 
-          {role === "admin" && (
-            <Link to="/admin" className="btn btn-outline-info me-2">
-              <i className="bi bi-speedometer2"></i> Vezérlőpult
-            </Link>
-          )}
-
-          {username ? (
+          {/* Jogosultságok kezelése */}
+          {isAuthenticated ? (
             <>
-              <span className="me-2 fw-semibold">{username}</span>
-              <button className="btn btn-outline-danger" onClick={handleLogout}>
+              <div className="admin-info d-flex align-items-center gap-2">
+                <span className="admin-icon">
+                  <i className="bi bi-person-circle"></i>
+                </span>
+                <span>{username}</span>
+              </div>
+              <Button variant="outline-danger" onClick={handleLogout}>
                 <i className="bi bi-box-arrow-right"></i> Kijelentkezés
-              </button>
+              </Button>
             </>
           ) : (
             <>
-               <button className="btn btn-outline-primary me-2" onClick={() => setShowLogin(true)}>
-               <i className="bi bi-box-arrow-in-right"></i>Bejelentkezés
-              </button>
-              <button className="btn btn-outline-success" onClick={() => setShowRegister(true)}>
-              <i className="bi bi-person-plus"></i> Regisztráció
-              </button>
+              <Button variant="primary" onClick={() => setShowLoginModal(true)}>
+                <i className="bi bi-box-arrow-in-right"></i> Bejelentkezés
+              </Button>
+              <Button variant="success" onClick={() => setShowRegisterModal(true)}>
+                <i className="bi bi-person-plus"></i> Regisztráció
+              </Button>
             </>
           )}
         </div>
-      </div>
+      </nav>
 
-      <LoginModal show={showLogin} handleClose={() => setShowLogin(false)} />
-      <RegisterModal show={showRegister} handleClose={() => setShowRegister(false)} />
-    </nav>
+      {/* Modális ablakok */}
+      <LoginModal show={showLoginModal} handleClose={() => setShowLoginModal(false)} />
+      <RegisterModal show={showRegisterModal} handleClose={() => setShowRegisterModal(false)} />
+    </>
   );
 };
 

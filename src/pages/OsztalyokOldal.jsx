@@ -1,131 +1,112 @@
+// OsztalyokOldal.jsx
+
 import React, { useEffect, useState } from 'react';
-import { getOsztalyok, createOsztaly, updateOsztaly, deleteOsztaly } from '../api/osztalyApi';
-import { Button, Modal, Form, InputGroup, FormControl, Card, Container } from 'react-bootstrap';
+import { getOsztalyok, deleteOsztaly } from '../api/osztalyApi';
+import { Button, Form, Container, Card } from 'react-bootstrap';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useNavigate } from 'react-router-dom';
 import AdminVisszaGomb from '../components/AdminVisszaGomb';
 import AdminBreadcrumb from '../components/AdminBreadcrumb';
 import '../style.css';
 
 function OsztalyokOldal() {
-  const { darkMode } = useDarkMode();
   const [osztalyok, setOsztalyok] = useState([]);
-  const [szuro, setSzuro] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [kivalasztott, setKivalasztott] = useState(null);
-  const [formData, setFormData] = useState({ nev: '', egyediAzonosito: '', osztalyfonokNev: '' });
+  const [kereses, setKereses] = useState('');
+  const { darkMode } = useDarkMode();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    betoltOsztalyokat();
+    betoltOsztalyok();
   }, []);
 
-  const betoltOsztalyokat = async () => {
+  const betoltOsztalyok = async () => {
     try {
       const adatok = await getOsztalyok();
       setOsztalyok(adatok);
-    } catch (err) {
-      alert('Hiba az osztályok betöltésekor!');
+    } catch (error) {
+      console.error('Hiba az osztályok betöltésekor:', error);
     }
   };
 
-  const kezelesUj = () => {
-    setKivalasztott(null);
-    setFormData({ nev: '', egyediAzonosito: '', osztalyfonokNev: '' });
-    setShowModal(true);
-  };
-
-  const kezelesSzerkesztes = (osztaly) => {
-    setKivalasztott(osztaly);
-    setFormData({
-      nev: osztaly.nev,
-      egyediAzonosito: osztaly.egyediAzonosito || '',
-      osztalyfonokNev: osztaly.osztalyfonokNev || ''
-    });
-    setShowModal(true);
-  };
-
-  const mentes = async () => {
-    try {
-      if (kivalasztott?.id) {
-        await updateOsztaly(kivalasztott.id, formData);
-      } else {
-        await createOsztaly(formData);
-      }
-      setShowModal(false);
-      betoltOsztalyokat();
-    } catch (err) {
-      alert('Mentés sikertelen!');
+  const kezelesTorles = async (id) => {
+    if (window.confirm('Biztosan törölni szeretnéd ezt az osztályt?')) {
+      await deleteOsztaly(id);
+      betoltOsztalyok();
     }
   };
 
-  const torles = async (id) => {
-    if (window.confirm('Biztosan törlöd ezt az osztályt?')) {
-      try {
-        await deleteOsztaly(id);
-        betoltOsztalyokat();
-      } catch (err) {
-        alert('Törlés sikertelen!');
-      }
-    }
-  };
-
-  const szurtLista = osztalyok.filter((o) =>
-    o.nev.toLowerCase().includes(szuro.toLowerCase()) ||
-    (o.osztalyfonokNev || '').toLowerCase().includes(szuro.toLowerCase())
+  const szurtOsztalyok = osztalyok.filter((osztaly) =>
+    osztaly.nev.toLowerCase().includes(kereses.toLowerCase()) ||
+    (osztaly.osztalyfonokNev && osztaly.osztalyfonokNev.toLowerCase().includes(kereses.toLowerCase()))
   );
 
-  return (       
-    <Container className={`tablet-page py-4 ${darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}`}>
-      <div className=" d-flex align-items-center mb-3">
+  return (
+    <div
+      className="py-4"
+      style={{
+        minHeight: '100vh',
+        backgroundColor: darkMode ? '#121212' : 'peachpuff',
+      }}
+    >
+      <Container>
         <AdminVisszaGomb />
-        <AdminBreadcrumb className="ms-3" />
-      </div>
+        <AdminBreadcrumb current="osztalyok" />
 
-      <h2 className="text-center mb-4">Osztályok kezelése</h2>
+        <h2 className={`text-center mb-4 ${darkMode ? 'text-light' : 'text-dark'}`}>
+          Osztályok kezelése
+        </h2>
 
-      <InputGroup className="mb-3">
-        <FormControl
+        <Form.Control
+          type="text"
           placeholder="Keresés osztály vagy osztályfőnök alapján..."
-          value={szuro}
-          onChange={(e) => setSzuro(e.target.value)}
+          value={kereses}
+          onChange={(e) => setKereses(e.target.value)}
+          className="mb-4"
+          style={{
+            backgroundColor: darkMode ? '#333' : '#fff',
+            color: darkMode ? '#fff' : '#000',
+            borderColor: darkMode ? '#555' : '#ccc',
+          }}
         />
-        <Button variant="success" onClick={kezelesUj}>➕ Új osztály</Button>
-      </InputGroup>
 
-      <div className=" admin-page tanterem-grid">
-        {szurtLista.map((o) => (
-          <Card key={o.id} className={`tanterem-card ${darkMode ? 'dark-card' : ''}`}>
-            <Card.Body>
-              <Card.Title>{o.nev}</Card.Title>
-              <Card.Text>
-                <strong>Azonosító:</strong> {o.egyediAzonosito}<br />
-                <strong>Osztályfőnök:</strong> {o.osztalyfonokNev || '-'}
-              </Card.Text>
-              <div className="d-flex justify-content-end gap-2">
-                <Button size="sm" variant="info" onClick={() => kezelesSzerkesztes(o)}>✏️</Button>
-                <Button size="sm" variant="danger" onClick={() => torles(o.id)}>🗑️</Button>
+        {szurtOsztalyok.map((osztaly) => (
+          <Card
+            key={osztaly.id}
+            className={`mb-3 shadow-sm ${darkMode ? 'bg-secondary text-light' : 'bg-white text-dark'}`}
+            style={{ borderRadius: '15px' }}
+          >
+            <Card.Body className="d-flex justify-content-between align-items-center">
+              <div>
+                <h5 className="mb-2">{osztaly.nev}</h5>
+                <p className="mb-0">
+                  <strong>Azonosító:</strong> {osztaly.id}
+                </p>
+                {osztaly.osztalyfonokNev && (
+                  <p className="mb-0">
+                    <strong>Osztályfőnök:</strong> {osztaly.osztalyfonokNev}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Button
+                  variant="info"
+                  className="me-2"
+                  onClick={() => navigate(`/admin/osztalyok/szerkesztes/${osztaly.id}`)}
+                >
+                  <i className="bi bi-pencil"></i>
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => kezelesTorles(osztaly.id)}
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
               </div>
             </Card.Body>
           </Card>
         ))}
-      </div>
-
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{kivalasztott ? 'Osztály szerkesztése' : 'Új osztály'}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Control className="mb-2" placeholder="Osztály neve" value={formData.nev} onChange={(e) => setFormData({ ...formData, nev: e.target.value })} />
-            <Form.Control className="mb-2" placeholder="Egyedi azonosító" value={formData.egyediAzonosito} onChange={(e) => setFormData({ ...formData, egyediAzonosito: e.target.value })} />
-            <Form.Control placeholder="Osztályfőnök neve" value={formData.osztalyfonokNev} onChange={(e) => setFormData({ ...formData, osztalyfonokNev: e.target.value })} />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>Mégse</Button>
-          <Button variant="primary" onClick={mentes}>Mentés</Button>
-        </Modal.Footer>
-      </Modal>
-    </Container>
+      </Container>
+    </div>
   );
 }
 
