@@ -1,0 +1,52 @@
+footer {
+    background-color: #1c1c1e;
+    color: #ffffff;
+    padding: 2rem 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-top: auto;
+  }
+  
+  footer h5 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #e0e0e0;
+  }
+  
+  footer a {
+    color: #66ccff;
+    transition: color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  footer a:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+    text-decoration: underline;
+  }
+  
+  footer i {
+    font-size: 1.3rem;
+    vertical-align: middle;
+    margin: 0 0.4rem;
+  }
+  
+  footer hr {
+    border-top: 1px solid #444;
+    margin: 1.5rem auto;
+    width: 80%;
+  }
+  
+  /* Mobilbarát középre igazítás */
+  @media (max-width: 576px) {
+    footer .container {
+      text-align: center;
+    }
+  
+    footer i {
+      margin: 0 0.6rem;
+    }
+  }
+  
+  
